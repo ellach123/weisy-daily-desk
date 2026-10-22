@@ -39,7 +39,7 @@ def version_file():
   ffi=FixedFileInfo(filevers={nums}, prodvers={nums}, mask=0x3f, flags=0x0, OS=0x40004, fileType=0x1, subtype=0x0, date=(0, 0)),
   kids=[
     StringFileInfo([StringTable('080404b0', [
-      StringStruct('CompanyName', 'FreeyaFly'),
+      StringStruct('CompanyName', 'ellach123'),
       StringStruct('FileDescription', '潦草鼠鼠之家 Weisy'),
       StringStruct('FileVersion', '{VERSION}'),
       StringStruct('InternalName', 'Weisy-daily-desk'),

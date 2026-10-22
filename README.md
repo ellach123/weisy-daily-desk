@@ -25,7 +25,7 @@
 
 ## 快速开始（Windows，不用装任何东西）
 
-1. 打开[最新版本的下载页面](https://github.com/FreeyaFly/weisy-daily-desk/releases/latest)。也可以在这个仓库首页右侧的 **Releases** 里，点最新的版本号进入。
+1. 打开[最新版本的下载页面](https://github.com/ellach123/weisy-daily-desk/releases/latest)。也可以在这个仓库首页右侧的 **Releases** 里，点最新的版本号进入。
 2. 在页面下方的 **Assets** 里，点 **`Weisy-v…-windows.zip`** 下载（`…` 是版本号）。旁边两个「Source code」是源代码，不用下载。
 3. 在下载的文件上点右键 →「全部解压缩」，解压到你喜欢的位置。
 4. 打开解压出来的文件夹，双击 **`Weisy-daily-desk.exe`**，潦草鼠鼠之家会在独立窗口中打开。

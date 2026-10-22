@@ -28,7 +28,7 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 
 ## Quick start (Windows, nothing to install)
 
-1. Open the [download page of the latest version](https://github.com/FreeyaFly/weisy-daily-desk/releases/latest) — or, on this
+1. Open the [download page of the latest version](https://github.com/ellach123/weisy-daily-desk/releases/latest) — or, on this
    repository's front page, click the newest version under **Releases** on the right.
 2. Under **Assets** at the bottom of that page, click **`Weisy-v…-windows.zip`** (`…` is the version number). The two
    "Source code" files next to it are the source code; you do not need them.
