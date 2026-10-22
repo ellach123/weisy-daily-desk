@@ -3,6 +3,15 @@
 Each version: 中文 first, then English. The release workflow copies the section of the version being released
 into the GitHub release notes, so keep the heading format `## v<version> (<date>)`.
 
+## v0.2.2 (2026-10-22)
+
+**中文**
+- 项目的 GitHub 地址改为 `github.com/ellach123/weisy-daily-desk`（账号改名）。README 里的下载链接和程序文件属性里的发布者名称已同步更新。功能没有变化。
+
+**English**
+- The project moved to `github.com/ellach123/weisy-daily-desk` (account renamed). The download links in the README and
+  the publisher name in the program's file properties are updated to match. No functional changes.
+
 ## v0.2.1 (2026-10-14)
 
 **中文**
