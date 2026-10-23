@@ -1,6 +1,6 @@
 # Weisy · daily desk
 
-**English** · [中文](README.md)
+**English** · [中文](README.zh-CN.md)
 
 Weisy (Chinese name: 潦草鼠鼠之家) is a small personal workbench that runs entirely on your own computer: a today list, a task board,
 milestones with an automatic progress log, side-project tracking and habit check-ins — with a little mouse
@@ -14,9 +14,9 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 
 | Page | What it does |
 |---|---|
-| 今日 Today | A list for the day. Give each item a type (main / side / long-term / other) and the task it belongs to — Weisy suggests the task while you type. Finished items stay on their day; the mouse cheers when you tick one off. |
+| 今日 Today | A list for the day. Give each item a type (main / side / long-term / other) and the task it belongs to (**Weisy can suggest the task while you type**). Finished items stay on their day; the mouse cheers when you tick one off. |
 | 看板 Board | Drag tasks between To do / Doing / Waiting / Done. |
-| 任务 Tasks | Every task grouped by type. Open one to see its next step, notes, milestones and a progress log that is built automatically from the today-list items linked to it. |
+| 任务 Tasks | Every task grouped by type. Open one to see its next step, notes, milestones and **a progress log that is built automatically from the today-list items linked to it**. |
 | 副业 Side projects | Track side projects, the platforms you use and what each one earned. |
 | 习惯 Habits | One-tap check-ins with a year heatmap, optional tags, minutes and notes. |
 
