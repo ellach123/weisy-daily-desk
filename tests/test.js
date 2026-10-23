@@ -75,6 +75,7 @@
     r = rowByText('买菜');
     ok('switching to another branch clears a big task from the old branch', r.querySelector('.dv-task').value === '' && r.querySelector('.dv-area').value === 'long');
     setSel(r.querySelector('.dv-area'), ''); await wait(20);
+    await until(() => rowByText('买菜')?.querySelector('.dv-area').value === '');
     ok('其它 is allowed', rowByText('买菜').querySelector('.dv-area').value === '');
 
     // ---- edit, done, delete ----
@@ -86,6 +87,7 @@
     ok('checkbox marks it done (struck through)', rowByText('买菜和水果').classList.contains('is-done'));
     ok('counter shows done / total', /1\/\d+ 完成/.test(q('.dv-count').textContent), q('.dv-count').textContent);
     rowByText('买菜和水果').querySelector('[data-act="dv-toggle"]').click(); await wait(20);
+    await until(() => { const row = rowByText('买菜和水果'); return !!row && !row.classList.contains('is-done'); });
     ok('checkbox again un-does it', !rowByText('买菜和水果').classList.contains('is-done'));
     rowByText('买菜和水果').querySelector('[data-act="dv-del"]').click(); await wait(20);
     ok('× deletes the row', !rowByText('买菜和水果'));
@@ -143,6 +145,7 @@
     q(`[data-act="dv-day"][data-d="${today}"]`).click(); await wait(20);
     ok('moved back to its own day, the 起 label disappears', !!rowByText('挪到明天的事') && !rowByText('挪到明天的事').querySelector('.dv-since'));
     await moveVia('挪到明天的事', ago(2));
+    await until(() => (window.__writes['daily/' + ago(2)]?.items || []).some(i => i.text === '挪到明天的事' && i.since === today) && !rowByText('挪到明天的事'));
     const pw = window.__writes['daily/' + ago(2)];
     ok('can move to an earlier date', !!pw && pw.items.some(i => i.text === '挪到明天的事' && i.since === today) && !rowByText('挪到明天的事'));
 
@@ -250,9 +253,11 @@
     ok('clicking the progress opens 里程碑 and 进展日志', !dr().hidden && dr().innerText.includes('里程碑') && dr().innerText.includes('进展日志') && dr().querySelectorAll('.ms').length === 5);
     let mf = dr().querySelector('[data-form="ms-add"]');
     mf.querySelector('[name="title"]').value = '测试里程碑'; mf.requestSubmit(); await wait(80);
+    await until(() => (window.__writes['tasks/c02']?.milestones || []).some(m => m.title === '测试里程碑'));
     ok('a milestone added there is saved on the task', (window.__writes['tasks/c02']?.milestones || []).some(m => m.title === '测试里程碑'));
     ok('…and shows at once, with the cursor still in the box', dr().querySelectorAll('.ms').length === 6 && document.activeElement === dr().querySelector('[data-form="ms-add"] [name="title"]'));
     [...dr().querySelectorAll('.ms')].find(x => x.textContent.includes('测试里程碑')).querySelector('[data-act="ms-toggle"]').click(); await wait(80);
+    await until(() => (window.__writes['tasks/c02']?.milestones || []).find(m => m.title === '测试里程碑')?.done === true);
     ok('ticking a milestone saves it', (window.__writes['tasks/c02']?.milestones || []).find(m => m.title === '测试里程碑')?.done === true);
     const logLis = () => [...dr().querySelectorAll('.log li')];
     const potRow = logLis().find(li => li.textContent.includes('陶艺课 第二段'));
@@ -311,6 +316,7 @@
     ok('the mouse sits by 「＋ 新习惯」', !!q('.hab-head img.hab-mouse') && !!q('.hab-head [data-act="habit-new"]'));
     q('.hpanel[data-id="h-lang"] [data-act="habit-day"]').click(); await wait(30);
     q('form[data-form="checkin"]').requestSubmit(); await wait(150);
+    await until(() => q('.hab-head .hab-cheer')?.textContent === '🥳🎉✨'); // cheers once the check-in is saved
     ok('checking in makes it cheer 🥳🎉✨', q('.hab-head .hab-cheer')?.textContent === '🥳🎉✨');
     await wait(2400);
     ok('…and the cheer goes away again', !q('.hab-head .hab-cheer'));
