@@ -23,8 +23,15 @@ import server
 
 PORT = server.DEFAULT_PORT
 URL = f'http://127.0.0.1:{PORT}/'
-TITLE = '潦草鼠鼠之家'
 NO_WINDOW = os.environ.get('WEISY_NO_WINDOW') == '1'
+# message boxes speak the Windows display language, like the first-run dialog
+TEXT = {
+    'zh': {'title': '潦草鼠鼠之家', 'cannot_start': '潦草鼠鼠之家无法启动。', 'cannot_use': '潦草鼠鼠之家无法使用数据文件夹。',
+           'port': f'端口 {PORT} 正被其他程序占用，潦草鼠鼠之家无法启动。'},
+    'en': {'title': 'Weisy Daily Desk', 'cannot_start': 'Weisy Daily Desk cannot start.', 'cannot_use': 'Weisy Daily Desk cannot use its data folder.',
+           'port': f'Port {PORT} is used by another program, so Weisy Daily Desk cannot start.'},
+}[server.system_lang()]
+TITLE = TEXT['title']
 
 
 def message(text):
@@ -83,15 +90,15 @@ def main():
     try:
         store = server.Store(server.resolve_data_dir())
     except server.DataLocationError as e:
-        message(f'潦草鼠鼠之家无法启动。\n\n{e}')
+        message(f"{TEXT['cannot_start']}\n\n{e}")
         return
     except OSError as e:
-        message(f'潦草鼠鼠之家无法使用数据文件夹。\n\n{e}')
+        message(f"{TEXT['cannot_use']}\n\n{e}")
         return
     try:
         server.serve(PORT, store, on_ready=open_window)
     except server.PortInUse:
-        message(f'端口 {PORT} 正被其他程序占用，潦草鼠鼠之家无法启动。')
+        message(TEXT['port'])
 
 
 if __name__ == '__main__':

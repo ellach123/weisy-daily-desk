@@ -63,7 +63,7 @@ def package():
     DIST.mkdir()
     run([sys.executable, str(ROOT / 'tools' / 'build.py')])
     sep = os.pathsep
-    data = [(ROOT / 'app', 'app'), (ROOT / 'starter.json', '.'), (ROOT / 'tools' / 'setup.ps1', 'tools'),
+    data = [(ROOT / 'app', 'app'), (ROOT / 'starter.json', '.'), (ROOT / 'starter.en.json', '.'), (ROOT / 'tools' / 'setup.ps1', 'tools'),
             (ROOT / 'src' / 'assets' / 'icon.ico', 'src/assets'), (ROOT / 'src' / 'assets' / 'icon-64.png', 'src/assets')]
     env = {**os.environ, 'PYINSTALLER_CONFIG_DIR': str(BUILD / 'pyinstaller-cache')}  # keep its cache out of the user folders
     run([sys.executable, '-m', 'PyInstaller', str(ROOT / 'launcher.py'), '--name', 'Weisy-daily-desk', '--onedir', '--windowed',

@@ -108,6 +108,7 @@
 
     // ---- saved ----
     await until(() => { const w = window.__writes['daily/' + today]; return !!w && w.items.length === rows().length; });
+    await until(() => (window.__writes['daily/' + today]?.items || []).some(i => i.text === '家常菜 练习 W2' && i.taskId === 'c03' && i.areaId === 'side'));
     const saved = window.__writes['daily/' + today];
     ok('the day is saved as one document', !!saved && saved.items.length === rows().length, saved ? saved.items.length + ' items' : 'none');
     ok('saved items carry branch and big task', saved && saved.items.some(i => i.text === '家常菜 练习 W2' && i.taskId === 'c03' && i.areaId === 'side'));
@@ -155,6 +156,7 @@
     rowByText('昨天没做完A').querySelector('[data-act="dv-move"]').click(); await wait(20);
     ok('from a past day the date box starts at today', q('#dv-mvdate').value === today);
     key('Escape'); await wait(10);
+    await until(() => !(window.__writes['daily/' + today]?.items || []).some(i => i.text === '挪到明天的事')); // its move off today is saved
     const todayBefore = window.__writes['daily/' + today].items.length;
     await moveVia('昨天没做完A', today);
     ok('the moved row leaves the old day at once', !rowByText('昨天没做完A') && !!rowByText('昨天做完了'));
@@ -162,6 +164,7 @@
     await until(() => { const w = window.__writes['daily/' + yday]; return !!w && w.items.map(i => i.text).join('|') === '昨天做完了'; });
     const yw = window.__writes['daily/' + yday];
     ok('old day is saved without the moved rows', !!yw && yw.items.map(i => i.text).join('|') === '昨天做完了', yw && yw.items.map(i => i.text).join('|'));
+    await until(() => (window.__writes['daily/' + today]?.items || []).slice(-2).map(i => i.text).join('|') === '昨天没做完A|三天前的老任务');
     const tw = window.__writes['daily/' + today].items;
     ok('today gets them at the end, in the order moved', tw.length === todayBefore + 2 && tw.slice(-2).map(i => i.text).join('|') === '昨天没做完A|三天前的老任务', tw.slice(-2).map(i => i.text).join('|'));
     ok('moved rows keep branch and big task', tw.find(i => i.text === '昨天没做完A').taskId === 'c05' && tw.find(i => i.text === '昨天没做完A').areaId === 'side');
@@ -464,6 +467,38 @@
     ok('a plain click on a tab still switches the page', q('.tab[aria-current="page"]')?.dataset.view === 'habits');
     q('[data-view="today"]').click(); await wait(30);
     ok('back on 今日 the list is intact', !!rowByText('家常菜 练习 W2') && !!rowByText('陶艺课 第二段'));
+
+    // ---- 中 / EN: the language switch also switches the examples nobody has changed, nothing else ----
+    // two example tasks (one with its title changed) and an example habit without check-ins, saved the way a first run does
+    const putDoc = (path, body) => fetch('/api/doc/' + path, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    await putDoc('tasks/ex-holiday', { title: '示例：计划夏天的假期', areaId: 'main', status: 'doing', next: '定好出发日期', notes: '', due: '', order: 9000,
+      milestones: [{ id: 'em1', title: '选好目的地', due: '', done: false }] });
+    await putDoc('tasks/ex-bike', { title: '我的自行车：换内胎', areaId: 'side', status: 'todo', next: '换一条新内胎', notes: '', due: '', order: 9001, milestones: [] });
+    await putDoc('habits/ex-sport', { name: '示例：运动', color: '#2B8A3E', order: 99, useTags: true, tags: ['跑步', '骑车', '游泳'], mins: true, longNote: false, didLabel: '备注', archived: false });
+    document.dispatchEvent(new Event('visibilitychange')); // the page reloads the data, as when another window saved
+    await until(() => !!q('.bt') && q('.bt').textContent.includes('示例：计划夏天的假期'));
+    const before = JSON.stringify(window.__writes);
+    const changedOthers = () => Object.keys(window.__writes).filter(k => /^(tasks|habits|gigs|gigPaths)\//.test(k) && !/\/ex-/.test(k)
+      && JSON.stringify(window.__writes[k]) !== JSON.stringify(JSON.parse(before)[k]));
+    q('#langBtn').click();
+    await until(() => window.__writes['tasks/ex-holiday']?.title === 'Example: Plan the summer holiday' && window.__writes['areas/main']?.name === 'Main'
+      && window.__writes['habits/ex-sport']?.name === 'Example: Exercise'); // each document is its own save
+    const hol = window.__writes['tasks/ex-holiday'], bike = window.__writes['tasks/ex-bike'], sport = window.__writes['habits/ex-sport'];
+    ok('EN: an untouched example task switches title, next step and milestones', !!hol && hol.title === 'Example: Plan the summer holiday'
+      && hol.next === 'Agree on the dates' && hol.milestones[0].title === 'Pick the destination', hol && JSON.stringify([hol.title, hol.next]));
+    ok('EN: an example whose title was changed keeps that title, its untouched next step switches', !!bike && bike.title === '我的自行车：换内胎' && bike.next === 'Fit a new inner tube');
+    ok('EN: an example habit without check-ins switches name, label and options', !!sport && sport.name === 'Example: Exercise' && sport.didLabel === 'Notes'
+      && sport.tags.join('/') === 'Running/Cycling/Swimming');
+    ok('EN: the types switch too', window.__writes['areas/main']?.name === 'Main' && window.__writes['areas/side']?.desc === 'opens more doors');
+    ok('EN: tasks and habits that are not examples are not touched', changedOthers().length === 0, changedOthers().join(', '));
+    q('#langBtn').click();
+    await until(() => window.__writes['tasks/ex-holiday']?.title === '示例：计划夏天的假期' && window.__writes['areas/main']?.name === '主线'
+      && window.__writes['habits/ex-sport']?.name === '示例：运动' && window.__writes['areas/side']?.desc === '拓宽渠道');
+    const hol2 = window.__writes['tasks/ex-holiday'], bike2 = window.__writes['tasks/ex-bike'];
+    ok('中: switching back restores the examples', hol2.title === '示例：计划夏天的假期' && hol2.milestones[0].title === '选好目的地'
+      && window.__writes['habits/ex-sport']?.tags.join('/') === '跑步/骑车/游泳' && window.__writes['areas/side']?.desc === '拓宽渠道');
+    ok('中: the changed title is still the user\'s own', bike2.title === '我的自行车：换内胎' && bike2.next === '换一条新内胎');
+    ok('中: the page is back in 中文', document.documentElement.lang === 'zh-CN' && q('.brand-name').textContent === '潦草鼠鼠之家');
   } catch (err) {
     out.push('FAIL  test crashed — ' + err.message + '\n' + err.stack);
   }

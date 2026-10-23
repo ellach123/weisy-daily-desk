@@ -1,11 +1,12 @@
 """Build the page the local server serves.
 
     python tools/build.py          -> app/index.html (+ icons and the app manifest)
-    python tools/build.py --test   -> also app/test.html (the page + tests/test.js)
+    python tools/build.py --test   -> also app/test.html (the page + tests/test.js) and app/test-en.html (+ tests/test_en.js)
 
 src/workbench.html is the source. The build inlines the two local scripts it loads
 (vendor/Sortable and local-store.js), adds the icon links and the web-app manifest, and fills in the
-version number from the VERSION file (the only place it is kept).
+version number from the VERSION file (the only place it is kept), and the first run's examples in both
+languages (starter.json, starter.en.json), so the page can switch untouched examples along with the language.
 """
 import json
 import shutil
@@ -28,6 +29,9 @@ def rep(s, old, new):
 
 def build(test=False):
     page = rep((SRC / 'workbench.html').read_text(encoding='utf-8'), '__WEISY_VERSION__', VERSION)
+    starters = {lang: json.loads((ROOT / name).read_text(encoding='utf-8'))['collections']
+                for lang, name in (('zh', 'starter.json'), ('en', 'starter.en.json'))}
+    page = rep(page, '__WEISY_STARTERS__', json.dumps(starters, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))
     vendor = (SRC / 'vendor' / 'Sortable-1.15.2.min.js').read_text(encoding='utf-8')
     store = (SRC / 'local-store.js').read_text(encoding='utf-8')
     page = rep(page, '<script src="vendor/Sortable-1.15.2.min.js"></script>\n<script src="local-store.js"></script>',
@@ -46,9 +50,10 @@ def build(test=False):
     if not test:
         (APP / 'index.html').write_text(out, encoding='utf-8')
         return APP / 'index.html'
-    tests = (ROOT / 'tests' / 'test.js').read_text(encoding='utf-8')
-    out = out.replace('\n</body>\n</html>\n', f'\n<script>\n{tests}\n</script>\n</body>\n</html>\n')
-    (APP / 'test.html').write_text(out, encoding='utf-8')
+    # test.html: the page test (Chinese sample data); test-en.html: the English check (an English first run)
+    for script, name in (('test.js', 'test.html'), ('test_en.js', 'test-en.html')):
+        tests = (ROOT / 'tests' / script).read_text(encoding='utf-8')
+        (APP / name).write_text(out.replace('\n</body>\n</html>\n', f'\n<script>\n{tests}\n</script>\n</body>\n</html>\n'), encoding='utf-8')
     return APP / 'test.html'
 
 
@@ -60,7 +65,8 @@ def copy_assets():
     for name in ('icon.png', 'icon.ico', *(f'icon-{s}.png' for s in APP_ICONS)):
         shutil.copy2(SRC / 'assets' / name, APP / name)
     manifest = {
-        'name': '潦草鼠鼠之家', 'short_name': '潦草鼠鼠之家', 'lang': 'zh-CN',
+        # one file for both languages: the full name says both, the short one (under an icon) works in either
+        'name': 'Weisy Daily Desk · 潦草鼠鼠之家', 'short_name': 'Weisy',
         'start_url': '/', 'scope': '/', 'display': 'standalone',
         'launch_handler': {'client_mode': 'focus-existing'},  # opening it again brings the open window forward
         'background_color': '#F3F4F1', 'theme_color': '#F3F4F1',

@@ -25,13 +25,13 @@
    }
   },
   "tasks": {
-   "ex-read": {
-    "title": "示例：读完一本书",
+   "ex-spanish": {
+    "title": "示例：学点基础西班牙语",
     "areaId": "long",
     "status": "todo",
     "priority": 3,
     "due": "",
-    "next": "每天读 20 页",
+    "next": "每天练 15 分钟",
     "notes": "",
     "doneAt": "",
     "prevStatus": "",
@@ -40,25 +40,25 @@
     "milestones": [
      {
       "id": "em1",
-      "title": "读到一半",
+      "title": "学完 A1",
       "due": "",
       "done": false
      },
      {
       "id": "em2",
-      "title": "写读书笔记",
+      "title": "能用西班牙语聊 5 分钟",
       "due": "",
       "done": false
      }
     ]
    },
-   "ex-room": {
-    "title": "示例：整理房间",
+   "ex-wardrobe": {
+    "title": "示例：清理衣柜",
     "areaId": "side",
     "status": "todo",
     "priority": 2,
     "due": "",
-    "next": "先收拾书桌",
+    "next": "挑出五件要卖的衣服",
     "notes": "",
     "doneAt": "",
     "prevStatus": "",
@@ -66,13 +66,13 @@
     "order": 2048,
     "milestones": []
    },
-   "ex-cook": {
-    "title": "示例：学做一道新菜",
+   "ex-bike": {
+    "title": "示例：修好自行车",
     "areaId": "side",
     "status": "todo",
     "priority": 2,
     "due": "",
-    "next": "挑一道想学的菜",
+    "next": "换一条新内胎",
     "notes": "",
     "doneAt": "",
     "prevStatus": "",
@@ -80,8 +80,8 @@
     "order": 3072,
     "milestones": []
    },
-   "ex-trip": {
-    "title": "示例：准备一次旅行",
+   "ex-holiday": {
+    "title": "示例：计划夏天的假期",
     "areaId": "main",
     "status": "doing",
     "priority": 1,
@@ -95,19 +95,19 @@
     "milestones": [
      {
       "id": "em1",
-      "title": "订机票",
+      "title": "选好目的地",
       "due": "",
       "done": false
      },
      {
       "id": "em2",
-      "title": "订住宿",
+      "title": "订火车票或机票",
       "due": "",
       "done": false
      },
      {
       "id": "em3",
-      "title": "列行李清单",
+      "title": "订住宿",
       "due": "",
       "done": false
      }
@@ -120,31 +120,31 @@
     "items": [
      {
       "id": "ex1",
-      "text": "示例：读 20 页书",
+      "text": "示例：练 15 分钟西班牙语",
       "done": false,
       "doneAt": "",
       "areaId": "long",
-      "taskId": "ex-read"
+      "taskId": "ex-spanish"
      },
      {
       "id": "ex2",
-      "text": "示例：回复一封重要邮件",
+      "text": "示例：去取包裹",
+      "done": false,
+      "doneAt": "",
+      "areaId": "side",
+      "taskId": "ex-bike"
+     },
+     {
+      "id": "ex3",
+      "text": "示例：把空瓶拿回超市退押金",
       "done": false,
       "doneAt": "",
       "areaId": "",
       "taskId": ""
      },
      {
-      "id": "ex3",
-      "text": "示例：去超市买菜",
-      "done": false,
-      "doneAt": "",
-      "areaId": "side",
-      "taskId": "ex-cook"
-     },
-     {
       "id": "ex4",
-      "text": "示例：散步 30 分钟",
+      "text": "示例：预约牙医",
       "done": false,
       "doneAt": "",
       "areaId": "",
@@ -154,24 +154,24 @@
    }
   },
   "gigPaths": {
-   "ex-design": {
-    "name": "示例：接设计单",
+   "ex-secondhand": {
+    "name": "示例：卖二手衣服",
     "platformLabel": "平台",
     "projectLabel": "项目",
     "note": "",
     "order": 1,
     "createdAt": ""
    },
-   "ex-translate": {
-    "name": "示例：做翻译",
+   "ex-design": {
+    "name": "示例：自由职业接设计单",
     "platformLabel": "平台",
     "projectLabel": "项目",
     "note": "",
     "order": 2,
     "createdAt": ""
    },
-   "ex-resell": {
-    "name": "示例：二手闲置转卖",
+   "ex-pets": {
+    "name": "示例：遛狗和照看宠物",
     "platformLabel": "平台",
     "projectLabel": "项目",
     "note": "",
@@ -180,11 +180,11 @@
    }
   },
   "gigs": {
-   "ex-design-p": {
+   "ex-secondhand-p": {
     "kind": "platform",
-    "pathId": "ex-design",
+    "pathId": "ex-secondhand",
     "parentId": "",
-    "name": "示例：朋友介绍",
+    "name": "示例：二手交易 App",
     "status": "research",
     "link": "",
     "pay": "",
@@ -196,9 +196,9 @@
     "order": 1,
     "createdAt": ""
    },
-   "ex-translate-p": {
+   "ex-design-p": {
     "kind": "platform",
-    "pathId": "ex-translate",
+    "pathId": "ex-design",
     "parentId": "",
     "name": "示例：自由职业平台",
     "status": "research",
@@ -212,11 +212,11 @@
     "order": 2,
     "createdAt": ""
    },
-   "ex-resell-p": {
+   "ex-pets-p": {
     "kind": "platform",
-    "pathId": "ex-resell",
+    "pathId": "ex-pets",
     "parentId": "",
-    "name": "示例：二手交易平台",
+    "name": "示例：熟人介绍",
     "status": "research",
     "link": "",
     "pay": "",
@@ -237,8 +237,8 @@
     "useTags": true,
     "tags": [
      "跑步",
-     "瑜伽",
-     "拉伸"
+     "骑车",
+     "游泳"
     ],
     "mins": true,
     "longNote": false,
@@ -246,20 +246,20 @@
     "archived": false,
     "createdAt": ""
    },
-   "ex-reading": {
-    "name": "示例：阅读",
+   "ex-language": {
+    "name": "示例：练外语",
     "color": "#E8590C",
     "order": 2,
     "useTags": false,
     "tags": [],
     "mins": true,
     "longNote": false,
-    "didLabel": "读了什么",
+    "didLabel": "练了什么",
     "archived": false,
     "createdAt": ""
    },
-   "ex-sleep": {
-    "name": "示例：早睡",
+   "ex-screen": {
+    "name": "示例：晚上不看屏幕",
     "color": "#7048E8",
     "order": 3,
     "useTags": false,

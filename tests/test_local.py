@@ -68,8 +68,10 @@ def seed():
     return data
 
 
-def start(data_dir=TMP, extra=('--keep-alive',)):
-    p = subprocess.Popen([sys.executable, str(ROOT / 'server.py'), '--port', str(PORT), '--data', str(data_dir), '--test', *extra])
+def start(data_dir=TMP, extra=('--keep-alive',), lang='zh'):
+    """lang fixes the language of a first run's examples, whatever the language of the computer running the tests."""
+    p = subprocess.Popen([sys.executable, str(ROOT / 'server.py'), '--port', str(PORT), '--data', str(data_dir), '--test', *extra],
+                         env={**os.environ, 'WEISY_LANG': lang})
     for _ in range(50):
         try:
             urllib.request.urlopen(f'http://127.0.0.1:{PORT}/api/ping', timeout=1)
@@ -87,6 +89,26 @@ def call(method, path, body=None, headers=None):
             return r.status, json.loads(r.read() or b'{}')
     except urllib.error.HTTPError as e:
         return e.code, {}
+
+
+def browser_report(page, data_dir, out_name, profile='edge-profile', extra=()):
+    """Open page in a real-time headless Edge (a fresh profile); the page posts its PASS/FAIL report back to the server
+    (into data_dir). The report is kept in tests/<out_name>. Returns its first line and whether everything passed."""
+    report = data_dir / 'test-result.txt'
+    edge = subprocess.Popen([EDGE, '--headless=new', '--disable-gpu', f'--user-data-dir={TMP / profile}', '--window-size=1400,1700', *extra,
+                             '--remote-debugging-port=0', f'http://127.0.0.1:{PORT}/{page}'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    for _ in range(240):
+        if report.exists():
+            break
+        time.sleep(0.25)
+    edge.kill(); edge.wait()
+    stop_test_browser()
+    time.sleep(0.5)
+    text = report.read_text(encoding='utf-8') if report.exists() else 'NO REPORT (the page test did not finish)'
+    (ROOT / 'tests' / out_name).write_text(text, encoding='utf-8')
+    first = text.splitlines()[0] if text else ''
+    nums = first.split()[1].split('/') if first.startswith('RESULT:') else ['0', '1']
+    return first, nums[0] == nums[1]
 
 
 def wait_exit(p, seconds):
@@ -204,22 +226,8 @@ def main():
     seeded = seed()
     srv = start()
     try:
-        # run the page test in a real-time headless Edge; the page posts its PASS/FAIL report back to the server
-        report = TMP / 'test-result.txt'
-        edge = subprocess.Popen([EDGE, '--headless=new', '--disable-gpu', f'--user-data-dir={TMP / "edge-profile"}', '--window-size=1400,1700',
-                                 '--remote-debugging-port=0', f'http://127.0.0.1:{PORT}/test.html#today'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        for _ in range(240):
-            if report.exists():
-                break
-            time.sleep(0.25)
-        edge.kill(); edge.wait()
-        stop_test_browser()
-        time.sleep(0.5)
-        text = report.read_text(encoding='utf-8') if report.exists() else 'NO REPORT (the page test did not finish)'
-        (ROOT / 'tests' / 'result.txt').write_text(text, encoding='utf-8')
-        first = text.splitlines()[0] if text else ''
-        nums = first.split()[1].split('/') if first.startswith('RESULT:') else ['0', '1']
-        check(f'browser test: {first}', nums[0] == nums[1])
+        first, passed = browser_report('test.html#today', TMP, 'result.txt')
+        check(f'browser test: {first}', passed)
         saved = json.load(open(TMP / 'weisy.json', encoding='utf-8'))
         today = datetime.date.today().isoformat()
         day = saved['collections'].get('daily', {}).get(today)
@@ -269,15 +277,41 @@ def main():
               and all(t.startswith('示例：') for t in titles), f'{len(titles)} example titles')
         check('the example today-list is dated the day of the first run', list(cols.get('daily', {})) == [today]
               and cols['daily'][today]['date'] == today and '__today__' not in json.dumps(cols, ensure_ascii=False))
+        check('a Chinese first run leaves the language unset (the page shows 中文)', 'lang' not in cols.get('settings', {}).get('ui', {}))
     finally:
         srv.terminate(); srv.wait()
+    # the same first run on an English system: the same examples in English, and the page set to English
+    fresh_en = TMP / 'fresh-en'
+    srv = start(fresh_en, lang='en')
+    try:
+        st, body = call('GET', '/api/data')
+        en = body.get('collections', {})
+        titles = [d.get('title') or d.get('name') for c in ('tasks', 'gigPaths', 'gigs', 'habits') for d in en.get(c, {}).values()]
+        titles += [i['text'] for d in en.get('daily', {}).values() for i in d['items']]
+        same_ids = all(sorted(en.get(c, {})) == sorted(cols.get(c, {})) for c in ('areas', 'tasks', 'gigPaths', 'gigs', 'habits', 'daily'))
+        check('an English first run brings the same examples in English (all titled Example:)',
+              st == 200 and same_ids and sorted(a['name'] for a in en['areas'].values()) == sorted(['Main', 'Side', 'Long-term'])
+              and all(t.startswith('Example: ') for t in titles)
+              and not any('一' <= ch <= '鿿' for ch in json.dumps(en, ensure_ascii=False)), f'{len(titles)} example titles')
+        check('an English first run sets the page to English', en.get('settings', {}).get('ui', {}).get('lang') == 'en')
+        # every page and dialog of that English desk, looked at for Chinese that nobody translated
+        # (an English browser, as on an English system, whatever the language of the computer running the tests)
+        first, passed = browser_report('test-en.html#today', fresh_en, 'result-en.txt', 'edge-profile-en', ('--lang=en-US',))
+        check(f'English check: {first}', passed)
+    finally:
+        srv.terminate(); srv.wait()
+    sys.path.insert(0, str(ROOT))
+    import server
+    check('the system language decides the examples, WEISY_LANG overrides it',
+          server.system_lang({'WEISY_LANG': 'en'}) == 'en' and server.system_lang({'WEISY_LANG': 'zh'}) == 'zh'
+          and server.system_lang({'WEISY_LANG': 'xx'}) in ('zh', 'en'))
     presence_tests()
     fails = [c for c in checks if c[0] == 'FAIL']
     for c in checks:
         print(f'{c[0]}  {c[1]}' + (f'  — {c[2]}' if c[2] else ''))
-    print(f'ALL CHECKS: {len(checks) - len(fails)}/{len(checks)} passed; full browser report in tests/result.txt')
+    print(f'ALL CHECKS: {len(checks) - len(fails)}/{len(checks)} passed; full browser reports in tests/result.txt and tests/result-en.txt')
     clear_tmp()
-    for f in (ROOT / 'app' / 'test.html',):
+    for f in (ROOT / 'app' / 'test.html', ROOT / 'app' / 'test-en.html'):
         if f.exists():
             f.unlink()
     return fails

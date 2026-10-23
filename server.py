@@ -12,7 +12,8 @@ start it and pick the same data folder again. Where the data goes:
 Weisy's own small notes (location.txt, the shortcut answer) live in .weisy/ inside the program folder, so
 deleting the program folder leaves nothing behind but the data.
 Before the first change of each day it copies the data file to backups/ (the last 30 days are kept).
-On the very first run the data file is created from starter.json (three task types and a few examples).
+On the very first run the data file is created from starter.json (three task types and a few examples),
+or from starter.en.json when the system language is not Chinese (WEISY_LANG=zh / en decides instead).
 
 The server stops by itself shortly after the last Weisy window is closed (the page tells it).
 Run it with --keep-alive to keep it running regardless.
@@ -36,13 +37,13 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 if getattr(sys, 'frozen', False):
     # the packaged Windows version (Weisy-daily-desk.exe, see tools/package.py): the program folder is where the .exe is,
-    # the page and starter.json travel inside the package
+    # the page and the starter files travel inside the package
     ROOT = Path(sys.executable).resolve().parent
     BUNDLE = Path(getattr(sys, '_MEIPASS', ROOT))
 else:
     ROOT = BUNDLE = Path(__file__).resolve().parent
 APP = BUNDLE / 'app'
-STARTER = BUNDLE / 'starter.json'
+STARTER = {'zh': BUNDLE / 'starter.json', 'en': BUNDLE / 'starter.en.json'}
 DEFAULT_PORT = 8780
 NAME_RE = re.compile(r'^[A-Za-z0-9_\-]{1,64}$')                  # collection names
 ID_RE = re.compile(r'^(?!\.\.?$)[A-Za-z0-9_\-.~:@+]{1,200}$')    # same rule as the page
@@ -55,6 +56,30 @@ START_GRACE = 180    # seconds the server waits for the first window after it wa
 
 class DataLocationError(Exception):
     pass
+
+
+def system_lang(env=os.environ):
+    """'zh' when the system speaks Chinese, else 'en'; only used to pick the examples of a first run.
+    WEISY_LANG=zh / en overrides it (the tests use that)."""
+    forced = env.get('WEISY_LANG', '').strip().lower()
+    if forced in STARTER:
+        return forced
+    code = ''
+    if sys.platform == 'win32':
+        try:
+            import ctypes
+            # Windows display language: primary language id 0x04 is Chinese
+            return 'zh' if ctypes.windll.kernel32.GetUserDefaultUILanguage() & 0x3FF == 0x04 else 'en'
+        except (AttributeError, OSError):
+            pass
+    for name in ('LC_ALL', 'LC_MESSAGES', 'LANG'):
+        if env.get(name):
+            code = env[name]
+            break
+    if not code:
+        import locale
+        code = locale.getlocale()[0] or ''
+    return 'zh' if code.lower().startswith(('zh', 'chinese')) else 'en'
 
 
 def standard_data_dir(env=os.environ, home=None):
@@ -162,12 +187,14 @@ class Store:
 
     @staticmethod
     def _starter():
-        """starter.json: the three task types plus a few examples (titled 示例：…) to delete later.
+        """starter.json: the three task types plus a few examples (titled 示例：…) to delete later;
+        starter.en.json is the same in English (titled Example: …) and also sets the page to English.
         "__today__" becomes the date of this first run, so the example today-list shows up on 今日."""
-        if not STARTER.exists():
+        starter = STARTER[system_lang()]
+        if not starter.exists():
             return {}
         today = datetime.date.today().isoformat()
-        with open(STARTER, encoding='utf-8') as f:
+        with open(starter, encoding='utf-8') as f:
             text = f.read().replace('__today__', today)
         cols = json.loads(text).get('collections', {})
         for docs in cols.values():

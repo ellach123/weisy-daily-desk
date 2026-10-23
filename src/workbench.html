@@ -89,7 +89,7 @@ h1,h2,h3{text-wrap:balance}
 .filters{position:relative}
 .page-mouse{position:absolute;right:8px;top:4px;width:92px;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
 .gig-head{position:relative}
-.gig-mouse{position:absolute;right:200px;bottom:-37px;width:84px;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.gig-mouse{position:absolute;right:calc(200px + 17mm);bottom:calc(-37px - 2mm);width:84px;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
 .board-mouse{width:90px;height:auto;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
 @media (max-width:640px){.page-mouse{width:60px}.gig-mouse{width:56px;right:170px;bottom:-38px}.board-mouse{display:none}}
 .field{height:32px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:0 10px;min-width:0}
@@ -161,6 +161,7 @@ textarea.field{height:auto;padding:8px 10px;resize:vertical;line-height:1.5}
 .sd.waiting{border-color:var(--warn);border-style:dashed}
 .sd.done{border-color:var(--ok);background:var(--ok)}
 .col-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-height:64px;flex:1}
+html[lang="en"] .col-list:empty::before{content:"Drop here"}
 .col-list:empty::before{content:"拖到这里";display:grid;place-items:center;height:64px;border:1px dashed var(--line-2);border-radius:8px;color:var(--muted);font-size:12px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:grab;display:flex;flex-direction:column;gap:6px;touch-action:manipulation}
 .card:hover{border-color:var(--line-2)}
@@ -439,29 +440,30 @@ button.hm-cell:hover{box-shadow:inset 0 0 0 1.5px var(--c)}
   <header class="top">
     <div class="brand">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><ellipse cx="4.9" cy="10.4" rx="2.1" ry="2.6" transform="rotate(-22 4.9 10.4)"/><ellipse cx="9.2" cy="5.4" rx="2.2" ry="2.8" transform="rotate(-8 9.2 5.4)"/><ellipse cx="14.8" cy="5.4" rx="2.2" ry="2.8" transform="rotate(8 14.8 5.4)"/><ellipse cx="19.1" cy="10.4" rx="2.1" ry="2.6" transform="rotate(22 19.1 10.4)"/><path d="M12 11.4c-2.7 0-6.1 3.5-6.1 6.4 0 1.9 1.4 3.1 3.1 3.1 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.7 0 3.1-1.2 3.1-3.1 0-2.9-3.4-6.4-6.1-6.4Z"/></svg>
-      <span class="brand-name">潦草鼠鼠之家</span>
+      <span class="brand-name" data-i18n="app.name">潦草鼠鼠之家</span>
       <span class="brand-ver" id="ver">V1</span>
     </div>
-    <nav class="tabs" id="tabs" aria-label="模块"></nav>
+    <nav class="tabs" id="tabs" aria-label="模块" data-i18n-aria="nav.label"></nav>
     <div class="actions">
-      <button class="btn ghost sm" id="exportBtn" data-act="export" hidden title="把全部数据下载为 JSON 备份">导出备份</button>
-      <button class="btn primary sm" data-act="new-task" title="快捷键 N">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>新建任务
+      <button class="btn ghost sm" id="langBtn" data-act="lang" title="Switch to English" lang="en">EN</button>
+      <button class="btn ghost sm" id="exportBtn" data-act="export" hidden title="把全部数据下载为 JSON 备份" data-i18n="export.btn" data-i18n-title="export.title">导出备份</button>
+      <button class="btn primary sm" data-act="new-task" title="快捷键 N" data-i18n-title="newTask.title">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" fill="none"/></svg><span data-i18n="newTask.btn">新建任务</span>
       </button>
     </div>
   </header>
   <div id="filters"></div>
   <main id="main"></main>
   <footer class="foot">
-    <span>潦草鼠鼠之家 · 修改实时保存<span id="importWrap" hidden> · <button class="linkbtn" data-act="import" title="从导出的 JSON 备份恢复数据">导入备份</button></span></span>
-    <span>快捷键：<kbd>N</kbd> 新建任务　<kbd>1</kbd>–<kbd>5</kbd> 按标签顺序切换（拖动标签可调整顺序）　<kbd>Esc</kbd> 关闭</span>
+    <span><span data-i18n="foot.saved">潦草鼠鼠之家 · 修改实时保存</span><span id="importWrap" hidden> · <button class="linkbtn" data-act="import" title="从导出的 JSON 备份恢复数据" data-i18n="import.btn" data-i18n-title="import.title">导入备份</button></span></span>
+    <span data-i18n-html="foot.keys">快捷键：<kbd>N</kbd> 新建任务　<kbd>1</kbd>–<kbd>5</kbd> 按标签顺序切换（拖动标签可调整顺序）　<kbd>Esc</kbd> 关闭</span>
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </footer>
 </div>
 <div id="drawer" hidden></div>
 <div id="modal" hidden></div>
 <div id="toast" role="status" aria-live="polite"></div>
-<div id="offline" role="alert" hidden>本地程序已经停止，之后的修改不会被保存。请重新打开潦草鼠鼠之家（双击 Weisy-daily-desk.exe；用 Python 运行的双击 start.bat 或 start.command），已保存的内容都在。</div>
+<div id="offline" role="alert" hidden data-i18n="offline">本地程序已经停止，之后的修改不会被保存。请重新打开潦草鼠鼠之家（双击 Weisy-daily-desk.exe；用 Python 运行的双击 start.bat 或 start.command），已保存的内容都在。</div>
 
 <script src="vendor/Sortable-1.15.2.min.js"></script>
 <script src="local-store.js"></script>
@@ -471,21 +473,17 @@ button.hm-cell:hover{box-shadow:inset 0 0 0 1.5px var(--c)}
 
 /* ================= Config ================= */
 const APP_VERSION = 'v__WEISY_VERSION__';  // filled in by tools/build.py from the VERSION file
-const STATUS = [
-  { id: 'todo',    label: '待办',   sub: '还没开始' },
-  { id: 'doing',   label: '进行中', sub: '正在推进' },
-  { id: 'waiting', label: '等待中', sub: '等别人回复或外部条件' },
-  { id: 'done',    label: '完成',   sub: '做完了' },
-];
+/* Board columns; their names are st.<id> and st.<id>.sub in I18N. */
+const STATUS = [{ id: 'todo' }, { id: 'doing' }, { id: 'waiting' }, { id: 'done' }];
 const DONE_LIMIT = 15;
 
-/* Module registry — add a V2 module by appending one entry here. */
+/* Module registry — add a V2 module by appending one entry here (its tab name is tab.<id> in I18N). */
 const MODULES = [
-  { id: 'today',    label: '今日', key: '1', filters: false, render: renderToday, mount: mountToday },
-  { id: 'board',    label: '看板', key: '2', filters: true,  render: renderBoard, mount: mountBoard },
-  { id: 'projects', label: '任务', key: '3', filters: true,  render: renderProjects },
-  { id: 'gigs',     label: '副业', key: '5', filters: false, render: renderGigs, mount: mountGigs },
-  { id: 'habits',   label: '习惯', key: '6', filters: false, render: renderHabits, mount: mountHabits },
+  { id: 'today',    key: '1', filters: false, render: renderToday, mount: mountToday },
+  { id: 'board',    key: '2', filters: true,  render: renderBoard, mount: mountBoard },
+  { id: 'projects', key: '3', filters: true,  render: renderProjects },
+  { id: 'gigs',     key: '5', filters: false, render: renderGigs, mount: mountGigs },
+  { id: 'habits',   key: '6', filters: false, render: renderHabits, mount: mountHabits },
 ];
 
 /* ================= State ================= */
@@ -510,19 +508,294 @@ const pad = n => String(n).padStart(2, '0');
 const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 const parseD = s => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); };
 const diffDays = s => Math.round((parseD(s) - parseD(todayStr())) / 86400000);
-const md = s => { const [, m, d] = s.split('-').map(Number); return `${m}/${d}`; };
-const WD = ['日', '一', '二', '三', '四', '五', '六'];
-const weekday = s => '周' + WD[new Date(parseD(s)).getUTCDay()];
+const md = s => { const [, m, d] = s.split('-').map(Number); return tr('date.md', { m, d }); };
+const weekday = s => tr('date.wd', { w: new Date(parseD(s)).getUTCDay() });
 const rid = () => Math.random().toString(36).slice(2, 10);
 const byOrder = (a, b) => (a.order ?? 0) - (b.order ?? 0);
 const byDue = (a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : (a.due || '9999') > (b.due || '9999') ? 1 : byOrder(a, b);
 const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* ignore */ } };
 
+/* ================= Language =================
+   System texts in 中文 and English; what the user typed is never translated. The choice is saved with the
+   data (settings/ui.lang); data from before the switch existed has none and stays 中文. Before the data has
+   loaded (or when the local program is not running) the page uses the language it remembered in localStorage,
+   or else the browser's language. Missing English keys fall back to 中文.
+   A value can be a function of the variables (for English plurals). */
+const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+const I18N = {
+  zh: {
+    'app.name': '潦草鼠鼠之家',
+    'nav.label': '模块',
+    'lang.btn': 'EN', 'lang.title': 'Switch to English',
+    'export.btn': '导出备份', 'export.title': '把全部数据下载为 JSON 备份',
+    'import.btn': '导入备份', 'import.title': '从导出的 JSON 备份恢复数据',
+    'newTask.btn': '新建任务', 'newTask.title': '快捷键 N',
+    'foot.saved': '潦草鼠鼠之家 · 修改实时保存',
+    'foot.keys': '快捷键：<kbd>N</kbd> 新建任务　<kbd>1</kbd>–<kbd>5</kbd> 按标签顺序切换（拖动标签可调整顺序）　<kbd>Esc</kbd> 关闭',
+    'offline': '本地程序已经停止，之后的修改不会被保存。请重新打开潦草鼠鼠之家（双击 Weisy-daily-desk.exe；用 Python 运行的双击 start.bat 或 start.command），已保存的内容都在。',
+    'tab.today': '今日', 'tab.board': '看板', 'tab.projects': '任务', 'tab.gigs': '副业', 'tab.habits': '习惯',
+    'tab.title': '快捷键 {n} · 拖动可调整顺序', 'tab.saved': '已保存标签顺序',
+    'state.loading': '<strong>正在载入工作台…</strong>正在读取本地数据。',
+    'state.nodb': '<strong>本地程序没有运行</strong>请重新打开潦草鼠鼠之家（双击 Weisy-daily-desk.exe，或用 Python 运行的 start.bat），再刷新这个页面。',
+    'state.error': '<strong>数据读取中断</strong>刷新页面即可重新连接。',
+    'err.busy': '操作太频繁，稍等几秒再试', 'err.invalid': '这次修改没有保存，请刷新页面后重试', 'err.save': '保存失败：本地程序可能没有运行',
+    'type.none': '其它',
+    'due.over': v => `逾期 ${v.n} 天`, 'due.today': '今天', 'due.tomorrow': '明天', 'due.in': v => `${v.n} 天`, 'due.title': '截止 {d}',
+    'date.md': v => `${v.m}/${v.d}`, 'date.long': v => `${v.m}月${v.d}日`, 'date.wd': v => '周' + '日一二三四五六'[v.w],
+    'today.h1': v => `${v.m}月${v.d}日<span>星期${'日一二三四五六'[v.w]}</span>`,
+    'greet.morning': '早上好！', 'greet.afternoon': '下午好！', 'greet.evening': '晚上好，辛苦啦', 'greet.night': '夜深了，早点休息',
+    'dv.label': '今日清单', 'dv.title': '今日清单', 'dv.count': v => `${v.done}/${v.total} 完成`, 'dv.backToday': '回到今天',
+    'dv.ph.today': '输入今天想做的事，回车添加', 'dv.ph.day': v => `给 ${v.date} 添加一条，回车保存`, 'dv.add': '添加到清单',
+    'dv.newArea': '新条目的类型', 'dv.newTask': '新条目归属的任务', 'dv.pickType': '— 类型 —',
+    'dv.empty.today': '今天的清单还是空的。', 'dv.empty.day': '这一天没有记录。',
+    'dv.since': v => `${v.md} 起`, 'dv.since.title': '从 {d} 开始', 'dv.grip': '拖动调整顺序',
+    'dv.markDone': '标记为完成', 'dv.markUndone': '标记为未完成', 'dv.text': '内容', 'dv.type': '类型', 'dv.task': '归属的任务',
+    'dv.sug.link': v => `可能属于：${v.t} · 关联`, 'dv.sug.use': v => `可能属于：${v.t} · 选用`, 'dv.sug.no': '不是这个',
+    'dv.move': '移到 ▾', 'dv.move.title': '移到另一天的清单最后', 'dv.move.pop': '移到哪一天', 'dv.move.date': '目标日期', 'dv.move.ok': '确定',
+    'dv.del': '删除这条', 'dv.moved': v => `已移到 ${v.date}：${v.t}`, 'dv.deleted': v => `已删除：${v.t}`,
+    'dv.noTask': '— 不归属任务 —', 'dv.goneTask': '（这个任务已删除）',
+    'dv.linked': v => `今日清单：本周 ${v.week} 件 · 最近 ${v.last}`,
+    'bt.label': '任务', 'bt.h': '任务', 'bt.pushing': v => `今日正在推进 ${v.n} 项`, 'bt.empty': '没有未完成的任务。',
+    'bt.done': v => `已完成 ${v.n} 个`, 'bt.today': v => `今天 ${v.n} 条`,
+    'f.all': '全部', 'f.byType': '按类型筛选', 'f.search': '搜索任务',
+    'f.chipTitle': v => `${v.label}：${v.n} 个未完成的任务`,
+    'st.todo': '待办', 'st.todo.sub': '还没开始', 'st.doing': '进行中', 'st.doing.sub': '正在推进',
+    'st.waiting': '等待中', 'st.waiting.sub': '等别人回复或外部条件', 'st.done': '完成', 'st.done.sub': '做完了',
+    'b.showAll': v => `显示全部 ${v.n} 件`, 'b.quick.ph': '＋ 快速添加，回车保存', 'b.quick.label': '快速添加任务',
+    'task.done': v => `完成：${v.t}`, 'task.added': v => `已添加：${v.t}`, 'task.needTitle': '请填写标题',
+    'ms.pct': v => `完成 ${v.pct}%`, 'ms.count': v => `${v.done}/${v.total} 里程碑 · ${v.pct}%`, 'ms.allDone': '里程碑都完成了',
+    'ms.next': v => `下个里程碑：${v.t}`,
+    'p.title': '任务', 'p.sub': v => `· ${v.open} 件未完成，${v.doing} 件进行中`, 'p.areaN': v => `${v.n} 件`,
+    'p.areaEmpty': '这一类还没有任务，点右上角「新建任务」添加。',
+    'p.logN': v => `进展日志 ${v.n} 条`, 'p.view': '查看 →', 'p.msTitle': '查看里程碑和进展日志', 'p.openGigs': '打开副业',
+    'p.gigSum': v => `平台 ${v.n} 个 · 已通过 ${v.ok} 个${v.earned ? ` · 已赚 ${v.earned}` : ''}`,
+    'd.label': '里程碑和进展日志', 'd.edit': '编辑任务', 'close': '关闭', 'd.due': '截止',
+    'd.next': '下一步', 'd.next.ph': '具体到马上能动手的一步', 'd.notes': '备注', 'd.notes.ph': '写点备注…',
+    'd.ms': '里程碑', 'd.msDel': '删除里程碑', 'd.msEmpty': '还没有里程碑。', 'd.msNew': '新里程碑', 'd.msName': '里程碑名称', 'd.msDate': '里程碑日期',
+    'd.log': '进展日志', 'd.logEmpty': '在今日清单里把条目归属到这个任务，就会自动记录在这里。',
+    'log.done': '已完成', 'log.undone': '未完成', 'log.del': '删除这条日志',
+    'f.title': '标题', 'f.status': '状态', 'f.due': '截止日期', 'f.name': '名称',
+    'add': '添加', 'save': '保存', 'cancel': '取消', 'delete': '删除', 'create': '创建', 'edit': '编辑',
+    'confirmDel': '再点一次确认删除',
+    'exp.saved': '备份已保存', 'exp.fail': '导出没有完成，请稍后再试',
+    'gs.research': '调研中', 'gs.applied': '已申请', 'gs.testing': '测试中', 'gs.approved': '已通过', 'gs.failed': '未通过', 'gs.paused': '暂停',
+    'gs.active': '进行中', 'gs.completed': '已完成', 'gs.paid': '已结算',
+    'g.lbl.plat': '平台', 'g.lbl.proj': '项目',
+    'g.title': '副业', 'g.total': '累计已赚', 'g.month': '本月', 'g.new': '＋ 新副业', 'g.openSite': '打开网站 ↗',
+    'g.empty': '<strong>还没有副业</strong>点「＋ 新副业」开始记录，比如接设计单、做翻译、开网店。',
+    'g.platMeta': v => `${v.n} 个${v.label}${v.earned ? ` · 已赚 ${v.earned}` : ''}`,
+    'g.projAdd.ph': v => `添加${v.label}，回车保存`, 'g.projAdd': v => `添加${v.label}`,
+    'g.pathEarned': v => `这项副业已赚 ${v.e}`, 'g.editPath': '编辑副业', 'g.addPlat': v => `＋ 添加${v.label}`,
+    'g.noPlat': v => `还没有${v.label}，点右上角添加。`,
+    'g.m.edit': v => `编辑${v.label}`, 'g.m.add': v => `添加${v.label}`,
+    'g.link': '网址', 'g.pay': '报酬说明', 'g.pay.ph': '例如：$20/小时', 'g.earned': '已赚金额', 'g.cur': '币种',
+    'g.start': '开始日期', 'g.end': '结束 / 结算日期',
+    'g.delN': v => `再点一次：连同 ${v.n} 个${v.label}一起删除`, 'g.needName': '请填写名称',
+    'g.p.new': '新副业', 'g.p.name.ph': '例如：接设计单、做翻译、开网店',
+    'g.p.l1': '第一层叫什么', 'g.p.l1.ph': '平台 / 客户 / 店铺', 'g.p.l2': '第二层叫什么', 'g.p.l2.ph': '项目 / 订单 / 产品',
+    'g.p.note': '说明（选填）', 'g.p.delN': v => `再点一次：连同 ${v.n} 条记录一起删除`, 'g.p.del': '删除副业',
+    'g.p.needName': '请填写副业名称', 'g.p.created': v => `已创建：${v.t}`, 'g.p.deleted': v => `已删除副业：${v.t}`,
+    'h.sep': '、', 'h.mins': v => `${v.n} 分钟`, 'h.month': v => `${v.m}月`,
+    'h.wdRow': '<span>一</span><span></span><span>三</span><span></span><span>五</span><span></span><span>日</span>',
+    'h.colon': '：', 'h.checked': '已打卡', 'h.cell.off': '（未打卡，点一下补打卡）', 'h.aria.on': ' 已打卡', 'h.aria.off': ' 未打卡',
+    'h.stat': v => `连续 <b>${v.s}</b> 天 · 本周 <b>${v.w}</b> 次 · 累计 <b>${v.t}</b> 次`,
+    'h.doneToday': '✓ 今天已打卡', 'h.checkin': '今天打卡',
+    'h.search.notes': '搜索笔记', 'h.search.records': '搜索记录', 'h.search.label': v => `搜索${v.n}的记录`,
+    'h.noMatch': '没有匹配的记录。', 'h.noRecords': '还没有打卡记录。', 'h.collapse': '收起',
+    'h.all.notes': v => `全部笔记（${v.n}）`, 'h.all.records': v => `全部记录（${v.n}）`,
+    'h.title': '习惯', 'h.new': '＋ 新习惯', 'h.note': '点「今天打卡」或热力图里的任意一天，可以打卡、补打卡或修改当天的记录。',
+    'h.empty': '<strong>还没有习惯</strong>点「＋ 新习惯」添加。', 'h.didDefault': '做了什么',
+    'ci.tags': '今天做了（可多选）', 'ci.newTag': '新选项', 'ci.add': '＋ 添加', 'ci.mins': '时长（分钟，选填）',
+    'ci.opt': v => `${v.l}（选填）`, 'ci.note': '笔记（选填）', 'ci.remove': '取消这天的打卡', 'ci.save': '保存打卡',
+    'ci.saved': v => `${v.h}：${v.today ? '今天' : v.d}已打卡`, 'ci.confirmRemove': '再点一次确认取消打卡', 'ci.removed': '已取消这天的打卡',
+    'hf.edit': '编辑习惯', 'hf.new': '新习惯', 'hf.did': '打卡时的文字栏叫什么', 'hf.useTags': '打卡时可以点选项目',
+    'hf.tags': '可选项目（用顿号或逗号分开）', 'hf.mins': '记录时长', 'hf.note': '可以写长笔记',
+    'hf.delConfirm': '再点一次：连同全部打卡记录一起删除', 'hf.del': '删除习惯', 'hf.needName': '请填写习惯名称',
+    'hf.added': v => `已添加习惯：${v.t}`, 'hf.deleted': v => `已删除习惯：${v.t}`,
+    'im.bad': '这个文件不是有效的备份（无法读取 JSON）', 'im.empty': '这个文件里没有工作台的数据',
+    'im.file': v => `备份文件：${v.f}${v.at ? `（导出于 ${v.at}）` : ''}`, 'im.row': v => `${v.c}<b>${v.n}</b> 条`,
+    'im.note': '同一条记录会被备份里的版本覆盖；工作台里备份没有的记录会保留，不会被删除。',
+    'im.go': '确认导入', 'im.readFail': '读取文件失败，请重试', 'im.progress': v => `正在导入… ${v.n} 条`,
+    'im.done': v => (v.fail ? `导入完成：${v.n} 条成功，${v.fail} 条失败` : `导入完成：${v.n} 条`),
+    'col.areas': '分类', 'col.tasks': '任务', 'col.gigPaths': '副业', 'col.gigs': '平台和项目', 'col.habits': '习惯',
+    'col.habitLogs': '打卡记录（按月）', 'col.settings': '界面设置', 'col.daily': '今日清单',
+  },
+  en: {
+    'app.name': 'Weisy Daily Desk',
+    'nav.label': 'Pages',
+    'lang.btn': '中文', 'lang.title': '切换到中文',
+    'export.btn': 'Export backup', 'export.title': 'Download all data as a JSON backup',
+    'import.btn': 'Import backup', 'import.title': 'Restore data from an exported JSON backup',
+    'newTask.btn': 'New task', 'newTask.title': 'Shortcut N',
+    'foot.saved': 'Weisy Daily Desk · changes save as you go',
+    'foot.keys': 'Shortcuts: <kbd>N</kbd> new task · <kbd>1</kbd>–<kbd>5</kbd> switch pages in tab order (drag a tab to reorder) · <kbd>Esc</kbd> close',
+    'offline': 'The local program has stopped, so further changes will not be saved. Open Weisy Daily Desk again (double-click Weisy-daily-desk.exe; with Python, double-click start.bat or start.command). Everything saved so far is still there.',
+    'tab.today': 'Today', 'tab.board': 'Board', 'tab.projects': 'Tasks', 'tab.gigs': 'Side gigs', 'tab.habits': 'Habits',
+    'tab.title': 'Shortcut {n} · drag to reorder', 'tab.saved': 'Tab order saved',
+    'state.loading': '<strong>Loading your desk…</strong>Reading the local data.',
+    'state.nodb': '<strong>The local program is not running</strong>Open Weisy Daily Desk again (double-click Weisy-daily-desk.exe, or start.bat if you run it with Python), then refresh this page.',
+    'state.error': '<strong>Lost the connection to the data</strong>Refresh the page to reconnect.',
+    'err.busy': 'Too many changes at once. Try again in a few seconds', 'err.invalid': 'This change was not saved. Refresh the page and try again', 'err.save': 'Could not save: the local program may not be running',
+    'type.none': 'Other',
+    'due.over': v => `${plural(v.n, 'day')} overdue`, 'due.today': 'today', 'due.tomorrow': 'tomorrow', 'due.in': v => `in ${plural(v.n, 'day')}`, 'due.title': 'Due {d}',
+    'date.md': v => `${MON[v.m - 1]} ${v.d}`, 'date.long': v => `${MON[v.m - 1]} ${v.d}`, 'date.wd': v => WD_EN[v.w].slice(0, 3),
+    'today.h1': v => `${MONTH[v.m - 1]} ${v.d}<span>${WD_EN[v.w]}</span>`,
+    'greet.morning': 'Good morning!', 'greet.afternoon': 'Good afternoon!', 'greet.evening': 'Good evening. Well done today', 'greet.night': "It's late. Time to rest",
+    'dv.label': "Today's list", 'dv.title': "Today's list", 'dv.count': v => `${v.done}/${v.total} done`, 'dv.backToday': 'Back to today',
+    'dv.ph.today': 'What do you want to do today? Press Enter to add', 'dv.ph.day': v => `Add something for ${v.date}, press Enter to save`, 'dv.add': 'Add to the list',
+    'dv.newArea': 'Type of the new item', 'dv.newTask': 'Task the new item belongs to', 'dv.pickType': '— Type —',
+    'dv.empty.today': "Today's list is still empty.", 'dv.empty.day': 'Nothing on this day.',
+    'dv.since': v => `since ${v.md}`, 'dv.since.title': 'Started on {d}', 'dv.grip': 'Drag to reorder',
+    'dv.markDone': 'Mark as done', 'dv.markUndone': 'Mark as not done', 'dv.text': 'Text', 'dv.type': 'Type', 'dv.task': 'Task it belongs to',
+    'dv.sug.link': v => `Part of ${v.t}? · Link`, 'dv.sug.use': v => `Part of ${v.t}? · Use`, 'dv.sug.no': 'Not this one',
+    'dv.move': 'Move ▾', 'dv.move.title': "Move to the end of another day's list", 'dv.move.pop': 'Move to which day', 'dv.move.date': 'Target date', 'dv.move.ok': 'OK',
+    'dv.del': 'Delete this item', 'dv.moved': v => `Moved to ${v.date}: ${v.t}`, 'dv.deleted': v => `Deleted: ${v.t}`,
+    'dv.noTask': '— No task —', 'dv.goneTask': '(this task was deleted)',
+    'dv.linked': v => `Today's list: ${v.week} this week · last ${v.last}`,
+    'bt.label': 'Tasks', 'bt.h': 'Tasks', 'bt.pushing': v => `${v.n} moving forward today`, 'bt.empty': 'No unfinished tasks.',
+    'bt.done': v => `${v.n} done`, 'bt.today': v => `${plural(v.n, 'item')} today`,
+    'f.all': 'All', 'f.byType': 'Filter by type', 'f.search': 'Search tasks',
+    'f.chipTitle': v => `${v.label}: ${plural(v.n, 'unfinished task')}`,
+    'st.todo': 'To do', 'st.todo.sub': 'Not started yet', 'st.doing': 'In progress', 'st.doing.sub': 'Moving forward',
+    'st.waiting': 'Waiting', 'st.waiting.sub': 'Waiting on someone or something', 'st.done': 'Done', 'st.done.sub': 'Finished',
+    'b.showAll': v => `Show all ${v.n}`, 'b.quick.ph': '+ Quick add, press Enter to save', 'b.quick.label': 'Quick add a task',
+    'task.done': v => `Done: ${v.t}`, 'task.added': v => `Added: ${v.t}`, 'task.needTitle': 'Please enter a title',
+    'ms.pct': v => `${v.pct}% done`, 'ms.count': v => `${v.done}/${v.total} milestones · ${v.pct}%`, 'ms.allDone': 'All milestones done',
+    'ms.next': v => `Next milestone: ${v.t}`,
+    'p.title': 'Tasks', 'p.sub': v => `· ${v.open} unfinished, ${v.doing} in progress`, 'p.areaN': v => plural(v.n, 'task'),
+    'p.areaEmpty': 'No tasks of this type yet. Add one with "New task" at the top right.',
+    'p.logN': v => plural(v.n, 'log entry', 'log entries'), 'p.view': 'View →', 'p.msTitle': 'View milestones and progress log', 'p.openGigs': 'Open Side gigs',
+    'p.gigSum': v => `${plural(v.n, 'platform')} · ${v.ok} approved${v.earned ? ` · earned ${v.earned}` : ''}`,
+    'd.label': 'Milestones and progress log', 'd.edit': 'Edit task', 'close': 'Close', 'd.due': 'Due',
+    'd.next': 'Next step', 'd.next.ph': 'A step small enough to start right now', 'd.notes': 'Notes', 'd.notes.ph': 'Write a note…',
+    'd.ms': 'Milestones', 'd.msDel': 'Delete milestone', 'd.msEmpty': 'No milestones yet.', 'd.msNew': 'New milestone', 'd.msName': 'Milestone name', 'd.msDate': 'Milestone date',
+    'd.log': 'Progress log', 'd.logEmpty': 'Link items on the Today list to this task and they show up here automatically.',
+    'log.done': 'Done', 'log.undone': 'Not done', 'log.del': 'Delete this log entry',
+    'f.title': 'Title', 'f.status': 'Status', 'f.due': 'Due date', 'f.name': 'Name',
+    'add': 'Add', 'save': 'Save', 'cancel': 'Cancel', 'delete': 'Delete', 'create': 'Create', 'edit': 'Edit',
+    'confirmDel': 'Click again to delete',
+    'exp.saved': 'Backup saved', 'exp.fail': 'The export did not finish. Please try again later',
+    'gs.research': 'Researching', 'gs.applied': 'Applied', 'gs.testing': 'Testing', 'gs.approved': 'Approved', 'gs.failed': 'Rejected', 'gs.paused': 'Paused',
+    'gs.active': 'In progress', 'gs.completed': 'Completed', 'gs.paid': 'Paid',
+    'g.lbl.plat': 'Platform', 'g.lbl.proj': 'Project',
+    'g.title': 'Side gigs', 'g.total': 'Earned in total', 'g.month': 'This month', 'g.new': '+ New side gig', 'g.openSite': 'Open website ↗',
+    'g.empty': '<strong>No side gigs yet</strong>Click "+ New side gig" to start, e.g. design work, translation or an online shop.',
+    'g.platMeta': v => `${v.label}: ${v.n}${v.earned ? ` · earned ${v.earned}` : ''}`,
+    'g.projAdd.ph': v => `Add: ${v.label} (press Enter to save)`, 'g.projAdd': v => `Add: ${v.label}`,
+    'g.pathEarned': v => `Earned on this side gig: ${v.e}`, 'g.editPath': 'Edit side gig', 'g.addPlat': v => `+ Add: ${v.label}`,
+    'g.noPlat': v => `Nothing here yet (${v.label}). Add one at the top right.`,
+    'g.m.edit': v => `Edit: ${v.label}`, 'g.m.add': v => `Add: ${v.label}`,
+    'g.link': 'Website', 'g.pay': 'Pay', 'g.pay.ph': 'e.g. $20/hour', 'g.earned': 'Amount earned', 'g.cur': 'Currency',
+    'g.start': 'Start date', 'g.end': 'End / payment date',
+    'g.delN': v => `Click again: also deletes ${v.n} × ${v.label}`, 'g.needName': 'Please enter a name',
+    'g.p.new': 'New side gig', 'g.p.name.ph': 'e.g. design work, translation, online shop',
+    'g.p.l1': 'Name of the first level', 'g.p.l1.ph': 'Platform / Client / Shop', 'g.p.l2': 'Name of the second level', 'g.p.l2.ph': 'Project / Order / Product',
+    'g.p.note': 'Description (optional)', 'g.p.delN': v => `Click again: also deletes ${plural(v.n, 'record')}`, 'g.p.del': 'Delete side gig',
+    'g.p.needName': 'Please enter a name for the side gig', 'g.p.created': v => `Created: ${v.t}`, 'g.p.deleted': v => `Side gig deleted: ${v.t}`,
+    'h.sep': ', ', 'h.mins': v => `${v.n} min`, 'h.month': v => MON[v.m - 1],
+    'h.wdRow': '<span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span>',
+    'h.colon': ': ', 'h.checked': 'checked in', 'h.cell.off': ' (not checked in, click to add)', 'h.aria.on': ' checked in', 'h.aria.off': ' not checked in',
+    'h.stat': v => `<b>${v.s}</b>-day streak · <b>${v.w}</b> this week · <b>${v.t}</b> in total`,
+    'h.doneToday': '✓ Checked in today', 'h.checkin': 'Check in today',
+    'h.search.notes': 'Search notes', 'h.search.records': 'Search records', 'h.search.label': v => `Search the records of ${v.n}`,
+    'h.noMatch': 'No matching records.', 'h.noRecords': 'No check-ins yet.', 'h.collapse': 'Show less',
+    'h.all.notes': v => `All notes (${v.n})`, 'h.all.records': v => `All records (${v.n})`,
+    'h.title': 'Habits', 'h.new': '+ New habit', 'h.note': "Click \"Check in today\" or any day in the grid to check in, add a missed day or change that day's record.",
+    'h.empty': '<strong>No habits yet</strong>Add one with "+ New habit".', 'h.didDefault': 'What you did',
+    'ci.tags': 'Done today (pick any)', 'ci.newTag': 'New option', 'ci.add': '+ Add', 'ci.mins': 'Duration (minutes, optional)',
+    'ci.opt': v => `${v.l} (optional)`, 'ci.note': 'Note (optional)', 'ci.remove': 'Remove this check-in', 'ci.save': 'Save check-in',
+    'ci.saved': v => `${v.h}: checked in ${v.today ? 'today' : 'for ' + v.d}`, 'ci.confirmRemove': 'Click again to remove the check-in', 'ci.removed': 'Check-in removed',
+    'hf.edit': 'Edit habit', 'hf.new': 'New habit', 'hf.did': 'Label of the text box when checking in', 'hf.useTags': 'Pick from options when checking in',
+    'hf.tags': 'Options (separated by commas)', 'hf.mins': 'Record the duration', 'hf.note': 'Allow long notes',
+    'hf.delConfirm': 'Click again: also deletes all its check-ins', 'hf.del': 'Delete habit', 'hf.needName': 'Please enter a name for the habit',
+    'hf.added': v => `Habit added: ${v.t}`, 'hf.deleted': v => `Habit deleted: ${v.t}`,
+    'im.bad': 'This file is not a valid backup (the JSON cannot be read)', 'im.empty': 'This file has no data from the desk',
+    'im.file': v => `Backup file: ${v.f}${v.at ? ` (exported on ${v.at})` : ''}`, 'im.row': v => `${v.c}<b>${v.n}</b>`,
+    'im.note': "Records that are also in the backup are replaced by the backup's version; records that are not in the backup stay and are not deleted.",
+    'im.go': 'Import', 'im.readFail': 'Could not read the file. Please try again', 'im.progress': v => `Importing… ${v.n}`,
+    'im.done': v => (v.fail ? `Import finished: ${v.n} succeeded, ${v.fail} failed` : `Import finished: ${plural(v.n, 'record')}`),
+    'col.areas': 'Types', 'col.tasks': 'Tasks', 'col.gigPaths': 'Side gigs', 'col.gigs': 'Platforms and projects', 'col.habits': 'Habits',
+    'col.habitLogs': 'Check-ins (by month)', 'col.settings': 'Display settings', 'col.daily': 'Today lists',
+  },
+};
+if (window.__TEST__) window.__I18N__ = I18N;  // the test page checks that every text has its English version
+const MONTH = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MON = MONTH.map(m => m.slice(0, 3));
+const WD_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+let LANG = (() => {
+  const remembered = lsGet('weisy.lang');
+  if (remembered === 'en' || remembered === 'zh') return remembered;
+  return /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+})();
+if (window.__TEST__) window.__LANG0__ = LANG;  // the language chosen before any data arrived
+function tr(k, v = {}) {
+  const s = I18N[LANG][k] ?? I18N.zh[k] ?? k;
+  return typeof s === 'function' ? s(v) : s.replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
+}
+/* The texts written in the page's HTML (header, footer, offline note) carry data-i18n keys. */
+function applyStatic() {
+  document.documentElement.lang = LANG === 'en' ? 'en' : 'zh-CN';
+  document.title = tr('app.name');
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = tr(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = tr(el.dataset.i18nTitle); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', tr(el.dataset.i18nAria)));
+  const b = document.getElementById('langBtn');
+  if (b) { b.textContent = tr('lang.btn'); b.title = tr('lang.title'); b.lang = LANG === 'en' ? 'zh-CN' : 'en'; }
+}
+function setLang(l) {
+  if (l === LANG) return;
+  LANG = l; lsSet('weisy.lang', l);
+  applyStatic(); renderAll();
+}
+/* Called whenever settings arrive: the saved choice wins; none saved = 中文. */
+const syncLang = () => { if (!S.langSaving) setLang(uiSettings().lang === 'en' ? 'en' : 'zh'); };
+
+/* The first run's examples in both languages (starter.json, starter.en.json; filled in by tools/build.py).
+   Switching the language switches an example's text too, but only where it is still exactly the example's
+   text in the other language: whatever the user changed or added stays as it is. A habit's options only
+   switch while it has no check-ins, so old check-ins never name options that are gone. */
+const STARTERS = __WEISY_STARTERS__;
+const EXAMPLE_FIELDS = { areas: ['name', 'desc'], tasks: ['title', 'next'], gigPaths: ['name', 'platformLabel', 'projectLabel'], gigs: ['name'], habits: ['name', 'didLabel'] };
+function switchExamples(to) {
+  const from = STARTERS[to === 'en' ? 'zh' : 'en'], into = STARTERS[to];
+  if (!from || !into) return;
+  Object.entries(EXAMPLE_FIELDS).forEach(([col, fields]) => S[col].forEach(doc => {
+    const a = from[col]?.[doc.id], b = into[col]?.[doc.id];
+    if (!a || !b) return;
+    const patch = {};
+    fields.forEach(f => { if (doc[f] === a[f] && typeof b[f] === 'string' && b[f] !== a[f]) patch[f] = b[f]; });
+    if (col === 'tasks' && Array.isArray(doc.milestones)) {
+      let changed = false;
+      const ms = doc.milestones.map(m => {
+        const am = (a.milestones || []).find(x => x.id === m.id), bm = (b.milestones || []).find(x => x.id === m.id);
+        if (!am || !bm || m.title !== am.title || am.title === bm.title) return m;
+        changed = true; return { ...m, title: bm.title };
+      });
+      if (changed) patch.milestones = ms;
+    }
+    if (col === 'habits' && (a.tags || []).length && JSON.stringify(doc.tags || []) === JSON.stringify(a.tags)
+        && !S.habitLogs.some(l => l.habitId === doc.id)) patch.tags = [...b.tags];
+    if (Object.keys(patch).length) upd(col, doc.id, patch);
+  }));
+  // the example today-list lives under the date of the first run
+  const ai = from.daily?.__today__?.items || [], bi = into.daily?.__today__?.items || [];
+  S.daily.forEach(d => {
+    let changed = false;
+    const items = dayItems(d.id).map(it => {
+      const x = ai.find(e => e.id === it.id), y = bi.find(e => e.id === it.id);
+      if (!x || !y || it.text !== x.text || x.text === y.text) return it;
+      changed = true; return { ...it, text: y.text };
+    });
+    if (changed) dvWrite(d.id, items);
+  });
+}
+
 const A = id => S.areas.find(a => a.id === id);
 const T = id => S.tasks.find(t => t.id === id);
 /* 其它: a task (or today-list item) without a type, or whose type no longer exists. */
-const NONE = { id: '', name: '其它', color: '#9AA19D' };
+const NONE = { id: '', get name() { return tr('type.none'); }, color: '#9AA19D' };
 const typeOf = id => A(id) || NONE;
 const typeId = id => (A(id) ? id : '');
 /* The type chip filter: 'all', a type id, or 'none' for 其它. */
@@ -547,7 +820,6 @@ function toast(msg) {
    To use another backend, give Store.db an object with the same collection()/doc()
    calls, or rewrite these five methods — nothing else in the page touches storage. */
 const COLLECTIONS = ['areas', 'tasks', 'gigPaths', 'gigs', 'habits', 'habitLogs', 'settings', 'daily'];
-const COLLECTION_NAMES = { areas: '分类', tasks: '任务', gigPaths: '副业', gigs: '平台和项目', habits: '习惯', habitLogs: '打卡记录（按月）', settings: '界面设置', daily: '今日清单' };
 const Store = {
   db: null,
   subscribe(col, onData, onError) { return this.db.collection(col).onSnapshot(snap => onData(snap.docs.map(d => ({ id: d.id, ...d.data() }))), onError); },
@@ -572,9 +844,9 @@ const del = (col, id) => queued(`${col}/${id}`, () => Store.remove(col, id));
 const newId = col => Store.newId(col);
 function errText(e) {
   switch (e && e.code) {
-    case 'resource_exhausted': return '操作太频繁，稍等几秒再试';
-    case 'invalid_argument': return '这次修改没有保存，请刷新页面后重试';
-    default: return '保存失败：本地程序可能没有运行';
+    case 'resource_exhausted': return tr('err.busy');
+    case 'invalid_argument': return tr('err.invalid');
+    default: return tr('err.save');
   }
 }
 
@@ -601,7 +873,7 @@ function modulesOrdered() {
 function renderTabs() {
   if (S.dragging) { S.pending = true; return; }
   $('#tabs').innerHTML = modulesOrdered().map((m, i) =>
-    `<button class="tab" data-act="view" data-view="${m.id}" title="快捷键 ${i + 1} · 拖动可调整顺序" ${m.id === S.view ? 'aria-current="page"' : ''}>${m.label}</button>`).join('');
+    `<button class="tab" data-act="view" data-view="${m.id}" title="${tr('tab.title', { n: i + 1 })}" ${m.id === S.view ? 'aria-current="page"' : ''}>${tr('tab.' + m.id)}</button>`).join('');
 }
 function mountTabs() {
   if (!window.Sortable) return;
@@ -614,7 +886,7 @@ function mountTabs() {
       S.dragging = false; S.justDragged = Date.now(); S.pending = false;
       if (evt.oldIndex !== evt.newIndex) {
         const order = [...$('#tabs').children].map(b => b.dataset.view);
-        put('settings', 'ui', { ...uiSettings(), tabOrder: order }).then(ok => { if (ok) toast('已保存标签顺序'); });
+        put('settings', 'ui', { ...uiSettings(), tabOrder: order }).then(ok => { if (ok) toast(tr('tab.saved')); });
       }
       scheduleRender();
     },
@@ -627,30 +899,29 @@ function renderFilters() {
   if (box.contains(document.activeElement) && document.activeElement.id === 'q') return; // keep typing focus
   // 看板 and 任务 list the same tasks, so the chips count the unfinished ones
   const items = S.tasks.filter(t => t.status !== 'done');
-  const unit = '个未完成的任务';
   const count = id => items.filter(x => inFilter(x.areaId, id)).length;
   const chip = (id, label, color, desc) => {
     const n = count(id);
-    return `<button class="chip" data-act="area" data-area="${id}" aria-pressed="${S.filter.area === id}" title="${esc(label)}${desc ? ' — ' + esc(desc) : ''}：${n} ${unit}" ${color ? `style="--c:${esc(color)}"` : ''}>${color ? '<i class="sw"></i>' : ''}${esc(label)}<span class="n">${n}</span></button>`;
+    return `<button class="chip" data-act="area" data-area="${id}" aria-pressed="${S.filter.area === id}" title="${tr('f.chipTitle', { label: esc(label) + (desc ? ' — ' + esc(desc) : ''), n })}" ${color ? `style="--c:${esc(color)}"` : ''}>${color ? '<i class="sw"></i>' : ''}${esc(label)}<span class="n">${n}</span></button>`;
   };
   box.innerHTML = `<div class="filters">
     ${S.view === 'projects' ? `<img class="page-mouse" src="${MOUSE_TASKS_IMG}" alt="">` : ''}
-    <div class="chips" role="group" aria-label="按类型筛选">
-      ${chip('all', '全部', '')}
+    <div class="chips" role="group" aria-label="${tr('f.byType')}">
+      ${chip('all', tr('f.all'), '')}
       ${areasSorted().map(a => chip(a.id, a.name, a.color, a.desc)).join('')}
       ${count('none') || S.filter.area === 'none' ? chip('none', NONE.name, NONE.color) : ''}
     </div>
     ${S.view === 'board' ? `<div class="fctl"><img class="board-mouse" src="${MOUSE_BOARD_IMG}" alt="">
-      <input class="field search" id="q" type="search" placeholder="搜索任务" value="${esc(S.filter.q)}" aria-label="搜索任务">
+      <input class="field search" id="q" type="search" placeholder="${tr('f.search')}" value="${esc(S.filter.q)}" aria-label="${tr('f.search')}">
       </div>` : ''}
   </div>`;
 }
 function renderMain() {
   if (S.dragging) { S.pending = true; return; }
   const main = $('#main');
-  if (S.status === 'loading') { main.innerHTML = `<div class="state"><strong>正在载入工作台…</strong>正在读取本地数据。</div>`; return; }
-  if (S.status === 'nodb') { main.innerHTML = `<div class="state"><strong>本地程序没有运行</strong>请重新打开潦草鼠鼠之家（双击 Weisy-daily-desk.exe，或用 Python 运行的 start.bat），再刷新这个页面。</div>`; return; }
-  if (S.status === 'error') { main.innerHTML = `<div class="state"><strong>数据读取中断</strong>刷新页面即可重新连接。</div>`; return; }
+  if (S.status === 'loading') { main.innerHTML = `<div class="state">${tr('state.loading')}</div>`; return; }
+  if (S.status === 'nodb') { main.innerHTML = `<div class="state">${tr('state.nodb')}</div>`; return; }
+  if (S.status === 'error') { main.innerHTML = `<div class="state">${tr('state.error')}</div>`; return; }
   // never re-render under an unsaved text box (its typed text would be lost); render after it loses focus
   const ae0 = document.activeElement;
   if (ae0 && main.contains(ae0) && ae0.tagName === 'INPUT' && ae0.type === 'text' && ae0.value !== ae0.defaultValue) { S.mainStale = true; return; }
@@ -674,12 +945,12 @@ function dueBadge(s, done) {
   const n = diffDays(s);
   let cls = 'due', rel = '';
   if (!done) {
-    if (n < 0) { cls += ' over'; rel = `逾期 ${-n} 天`; }
-    else if (n === 0) { cls += ' soon'; rel = '今天'; }
-    else if (n === 1) { cls += ' soon'; rel = '明天'; }
-    else { if (n <= 3) cls += ' soon'; rel = `${n} 天`; }
+    if (n < 0) { cls += ' over'; rel = tr('due.over', { n: -n }); }
+    else if (n === 0) { cls += ' soon'; rel = tr('due.today'); }
+    else if (n === 1) { cls += ' soon'; rel = tr('due.tomorrow'); }
+    else { if (n <= 3) cls += ' soon'; rel = tr('due.in', { n }); }
   }
-  return `<span class="${cls}" title="截止 ${s} ${weekday(s)}">${md(s)}${rel ? ` · ${rel}` : ''}</span>`;
+  return `<span class="${cls}" title="${tr('due.title', { d: `${s} ${weekday(s)}` })}">${md(s)}${rel ? ` · ${rel}` : ''}</span>`;
 }
 
 /* ================= Module: 看板 ================= */
@@ -707,12 +978,12 @@ function renderBoard() {
     let more = '';
     if (s.id === 'done') {
       list.sort((a, b) => (b.doneAt || '').localeCompare(a.doneAt || '') || byOrder(a, b));
-      if (!S.showAllDone && list.length > DONE_LIMIT) { list = list.slice(0, DONE_LIMIT); more = `<button class="more" data-act="show-all-done">显示全部 ${total} 件</button>`; }
+      if (!S.showAllDone && list.length > DONE_LIMIT) { list = list.slice(0, DONE_LIMIT); more = `<button class="more" data-act="show-all-done">${tr('b.showAll', { n: total })}</button>`; }
     } else list.sort(byOrder);
-    const quick = s.id === 'todo' ? `<form class="quick" data-form="quick"><input id="quickAdd" name="title" placeholder="＋ 快速添加，回车保存" aria-label="快速添加任务" autocomplete="off"></form>` : '';
+    const quick = s.id === 'todo' ? `<form class="quick" data-form="quick"><input id="quickAdd" name="title" placeholder="${tr('b.quick.ph')}" aria-label="${tr('b.quick.label')}" autocomplete="off"></form>` : '';
     return `<section class="col" data-status="${s.id}">
-      <header class="col-h"><span class="sd ${s.id}"></span><span class="col-name">${s.label}</span><span class="count">${total}</span></header>
-      <div class="col-sub">${s.sub}</div>
+      <header class="col-h"><span class="sd ${s.id}"></span><span class="col-name">${tr('st.' + s.id)}</span><span class="count">${total}</span></header>
+      <div class="col-sub">${tr('st.' + s.id + '.sub')}</div>
       ${quick}
       <ul class="col-list" data-status="${s.id}">${list.map(card).join('')}</ul>
       ${more}
@@ -752,7 +1023,7 @@ function onDrop(evt) {
   if (status === 'done' && t.status !== 'done') { patch.doneAt = todayStr(); patch.prevStatus = t.status; }
   if (status !== 'done' && t.status === 'done') patch.doneAt = '';
   upd('tasks', id, patch);
-  if (status === 'done' && t.status !== 'done') toast(`完成：${t.title}`);
+  if (status === 'done' && t.status !== 'done') toast(tr('task.done', { t: t.title }));
 }
 
 /* ================= Module: 任务 ================= */
@@ -765,26 +1036,28 @@ function msStats(t) {
 function nextMilestone(t) {
   return [...(t.milestones || [])].filter(m => !m.done).sort((a, b) => (a.due || '9999').localeCompare(b.due || '9999'))[0];
 }
-const TSTATUS = { todo: ['待办', ''], doing: ['进行中', 'active'], waiting: ['等待中', 'paused'], done: ['完成', 'done'] };
+/* Status pill class per status; the label is the board column's name. */
+const TSTATUS = { todo: '', doing: 'active', waiting: 'paused', done: 'done' };
+const tStatus = s => (s in TSTATUS ? [tr('st.' + s), TSTATUS[s]] : [tr('st.todo'), '']);
 const STATUS_RANK = { doing: 0, todo: 1, waiting: 2, done: 3 };
 function msBlock(t) {
   const st = msStats(t), nm = nextMilestone(t);
-  return `<span class="bar" role="img" aria-label="完成 ${st.pct}%"><i style="width:${st.pct}%"></i></span>
-    <span class="pmeta"><span class="num">${st.done}/${st.total} 里程碑 · ${st.pct}%</span>${nm ? '' : '<span>里程碑都完成了</span>'}</span>
-    ${nm ? `<span class="pnext"><span>下个里程碑：${esc(nm.title)}</span>${dueBadge(nm.due, false)}</span>` : ''}`;
+  return `<span class="bar" role="img" aria-label="${tr('ms.pct', { pct: st.pct })}"><i style="width:${st.pct}%"></i></span>
+    <span class="pmeta"><span class="num">${tr('ms.count', st)}</span>${nm ? '' : `<span>${tr('ms.allDone')}</span>`}</span>
+    ${nm ? `<span class="pnext"><span>${tr('ms.next', { t: esc(nm.title) })}</span>${dueBadge(nm.due, false)}</span>` : ''}`;
 }
 function thingCard(t) {
   const done = t.status === 'done';
-  const [sl, sc] = TSTATUS[t.status] || TSTATUS.todo;
+  const [sl, sc] = tStatus(t.status);
   const nMs = (t.milestones || []).length, nLog = progressLog(t).length;
-  const extra = nMs ? msBlock(t) : nLog ? `<span class="pmeta"><span>进展日志 ${nLog} 条</span><span>查看 →</span></span>` : '';
+  const extra = nMs ? msBlock(t) : nLog ? `<span class="pmeta"><span>${tr('p.logN', { n: nLog })}</span><span>${tr('p.view')}</span></span>` : '';
   return `<div class="pcard ${done ? 'is-done' : ''}" style="--c:${esc(typeOf(t.areaId).color)}">
     <button class="pcard-main" data-act="open-ms" data-id="${t.id}">
       <span class="pcard-h"><h3>${esc(t.title)}</h3><span class="pill ${sc}">${sl}</span></span>
       ${dailyLine(t.id) ? `<span class="pdaily">${dailyLine(t.id)}</span>` : ''}
       <span class="pmeta">${dueBadge(t.due, done)}</span>
     </button>
-    ${extra ? `<button class="pcard-ms" data-act="open-ms" data-id="${t.id}" title="查看里程碑和进展日志">${extra}</button>` : ''}
+    ${extra ? `<button class="pcard-ms" data-act="open-ms" data-id="${t.id}" title="${tr('p.msTitle')}">${extra}</button>` : ''}
     ${trackerBlock(t)}
   </div>`;
 }
@@ -794,7 +1067,7 @@ function trackerBlock(t) {
     const plats = S.gigs.filter(g => g.kind === 'platform');
     const ok = plats.filter(g => g.status === 'approved').length;
     const sums = earnSums(S.gigs.filter(g => g.kind === 'project'));
-    return `<button class="pcard-ms" data-act="view" data-view="gigs" title="打开副业"><span class="pmeta"><span>平台 ${plats.length} 个 · 已通过 ${ok} 个${Object.keys(sums).length ? ` · 已赚 ${moneyText(sums)}` : ''}</span><span>查看 →</span></span></button>`;
+    return `<button class="pcard-ms" data-act="view" data-view="gigs" title="${tr('p.openGigs')}"><span class="pmeta"><span>${tr('p.gigSum', { n: plats.length, ok, earned: Object.keys(sums).length ? moneyText(sums) : '' })}</span><span>${tr('p.view')}</span></span></button>`;
   }
   return '';
 }
@@ -806,13 +1079,13 @@ function renderProjects() {
   const blocks = areas.map(a => {
     const ts = tasks.filter(t => typeId(t.areaId) === a.id).sort((x, y) => (STATUS_RANK[x.status] ?? 1) - (STATUS_RANK[y.status] ?? 1) || byOrder(x, y));
     return `<section class="area-block">
-      <div class="area-h" style="--c:${esc(a.color)}"><i></i>${esc(a.name)}<span class="n">${ts.length} 件</span></div>
-      ${ts.length ? `<div class="pgrid">${ts.map(thingCard).join('')}</div>` : '<div class="area-empty">这一类还没有任务，点右上角「新建任务」添加。</div>'}
+      <div class="area-h" style="--c:${esc(a.color)}"><i></i>${esc(a.name)}<span class="n">${tr('p.areaN', { n: ts.length })}</span></div>
+      ${ts.length ? `<div class="pgrid">${ts.map(thingCard).join('')}</div>` : `<div class="area-empty">${tr('p.areaEmpty')}</div>`}
     </section>`;
   }).join('');
   const open = tasks.filter(t => t.status !== 'done').length;
   const doingN = tasks.filter(t => t.status === 'doing').length;
-  return `<div class="view-head"><h1>任务 <span class="muted" style="font-size:14px;font-weight:400">· ${open} 件未完成，${doingN} 件进行中</span></h1></div>${blocks}`;
+  return `<div class="view-head"><h1>${tr('p.title')} <span class="muted" style="font-size:14px;font-weight:400">${tr('p.sub', { open, doing: doingN })}</span></h1></div>${blocks}`;
 }
 
 /* ================= Drawer: 任务的里程碑和进展日志 ================= */
@@ -844,7 +1117,7 @@ function renderDrawer(force) {
   const refocus = !force && typing ? (ae.id ? '#' + CSS.escape(ae.id) : `[data-form="${ae.form?.dataset.form}"] [name="${ae.name}"]`) : '';
   const scrollTop = box.querySelector('.drawer')?.scrollTop || 0;
   box.innerHTML = `<div class="scrim" data-act="close-drawer"></div>
-    <aside class="drawer" role="dialog" aria-modal="true" aria-label="里程碑和进展日志">${msDetail(t)}</aside>`;
+    <aside class="drawer" role="dialog" aria-modal="true" aria-label="${tr('d.label')}">${msDetail(t)}</aside>`;
   box.hidden = false;
   const dr = box.querySelector('.drawer');
   if (!force) dr.scrollTop = scrollTop;
@@ -855,41 +1128,41 @@ function renderDrawer(force) {
 }
 function msDetail(t) {
   const st = msStats(t), done = t.status === 'done';
-  const [sl, sc] = TSTATUS[t.status] || TSTATUS.todo;
+  const [sl, sc] = tStatus(t.status);
   const ms = [...(t.milestones || [])].sort((x, y) => (x.due || '9999').localeCompare(y.due || '9999'));
   const log = progressLog(t);
   return `
     <div class="d-top">${areaTag(typeOf(t.areaId))}<span class="pill ${sc}">${sl}</span><span class="sp"></span>
-      <button class="btn sm" data-act="edit" data-id="${t.id}">编辑任务</button>
-      <button class="x" data-act="close-drawer" aria-label="关闭">${ICON.close}</button></div>
+      <button class="btn sm" data-act="edit" data-id="${t.id}">${tr('d.edit')}</button>
+      <button class="x" data-act="close-drawer" aria-label="${tr('close')}">${ICON.close}</button></div>
     <div><h2 class="d-title">${esc(t.title)}</h2></div>
     ${ms.length || t.due ? `<div class="d-stats" style="--c:${esc(typeOf(t.areaId).color)}">
       ${ms.length ? `<div class="bar"><i style="width:${st.pct}%"></i></div>
-      <span class="due">${st.done}/${st.total} 里程碑 · ${st.pct}%</span>` : ''}
-      ${t.due ? `<span>截止 ${dueBadge(t.due, done)}</span>` : ''}
+      <span class="due">${tr('ms.count', st)}</span>` : ''}
+      ${t.due ? `<span>${tr('d.due')} ${dueBadge(t.due, done)}</span>` : ''}
     </div>` : ''}
-    <section class="dsec"><h3><label for="dn-next">下一步</label></h3>
-      <input class="field d-edit" id="dn-next" data-field="next" value="${esc(t.next || '')}" placeholder="具体到马上能动手的一步" autocomplete="off"></section>
-    <section class="dsec"><h3><label for="dn-notes">备注</label></h3>
-      <textarea class="field d-edit d-notes" id="dn-notes" data-field="notes" rows="2" placeholder="写点备注…">${esc(t.notes || '')}</textarea></section>
+    <section class="dsec"><h3><label for="dn-next">${tr('d.next')}</label></h3>
+      <input class="field d-edit" id="dn-next" data-field="next" value="${esc(t.next || '')}" placeholder="${tr('d.next.ph')}" autocomplete="off"></section>
+    <section class="dsec"><h3><label for="dn-notes">${tr('d.notes')}</label></h3>
+      <textarea class="field d-edit d-notes" id="dn-notes" data-field="notes" rows="2" placeholder="${tr('d.notes.ph')}">${esc(t.notes || '')}</textarea></section>
     <section class="dsec">
-      <h3>里程碑 <span class="n">${ms.filter(m => m.done).length}/${ms.length}</span></h3>
+      <h3>${tr('d.ms')} <span class="n">${ms.filter(m => m.done).length}/${ms.length}</span></h3>
       <div class="panel">
         ${ms.length ? ms.map(m => `<div class="ms ${m.done ? 'is-done' : ''}">
-          <button class="check" data-act="ms-toggle" data-mid="${m.id}" aria-pressed="${!!m.done}" aria-label="${m.done ? '标记为未完成' : '标记为完成'}">${ICON.check}</button>
+          <button class="check" data-act="ms-toggle" data-mid="${m.id}" aria-pressed="${!!m.done}" aria-label="${m.done ? tr('dv.markUndone') : tr('dv.markDone')}">${ICON.check}</button>
           <span class="t">${esc(m.title)}</span>${dueBadge(m.due, m.done)}
-          <button class="mini-x" data-act="ms-del" data-mid="${m.id}" aria-label="删除里程碑">${ICON.close}</button></div>`).join('') : '<p class="empty-note">还没有里程碑。</p>'}
+          <button class="mini-x" data-act="ms-del" data-mid="${m.id}" aria-label="${tr('d.msDel')}">${ICON.close}</button></div>`).join('') : `<p class="empty-note">${tr('d.msEmpty')}</p>`}
       </div>
       <form class="inline-add" data-form="ms-add">
-        <input class="field" name="title" placeholder="新里程碑" aria-label="里程碑名称" autocomplete="off">
-        <input class="field" name="due" type="date" aria-label="里程碑日期">
-        <button class="btn sm">添加</button>
+        <input class="field" name="title" placeholder="${tr('d.msNew')}" aria-label="${tr('d.msName')}" autocomplete="off">
+        <input class="field" name="due" type="date" aria-label="${tr('d.msDate')}">
+        <button class="btn sm">${tr('add')}</button>
       </form>
     </section>
     <section class="dsec">
-      <h3>进展日志 <span class="n">${log.length}</span></h3>
+      <h3>${tr('d.log')} <span class="n">${log.length}</span></h3>
       <div class="panel">
-        ${log.length ? `<ul class="log">${log.map(logEntry).join('')}</ul>` : '<p class="empty-note">在今日清单里把条目归属到这个任务，就会自动记录在这里。</p>'}
+        ${log.length ? `<ul class="log">${log.map(logEntry).join('')}</ul>` : `<p class="empty-note">${tr('d.logEmpty')}</p>`}
       </div>
     </section>`;
 }
@@ -906,21 +1179,21 @@ function openTask(id, preset = {}) {
   const box = $('#modal');
   box.innerHTML = `<div class="scrim" data-act="close-modal"></div>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tf-h">
-    <h2 id="tf-h">${t ? '编辑任务' : '新建任务'}</h2>
+    <h2 id="tf-h">${t ? tr('d.edit') : tr('newTask.btn')}</h2>
     <form class="form" data-form="task">
-      <label class="f">标题<input class="field" name="title" id="tf-title" value="${esc(d.title)}" required autocomplete="off"></label>
+      <label class="f">${tr('f.title')}<input class="field" name="title" id="tf-title" value="${esc(d.title)}" required autocomplete="off"></label>
       <div class="grid3">
-        <label class="f">类型<select class="field" name="areaId" id="tf-area">
+        <label class="f">${tr('dv.type')}<select class="field" name="areaId" id="tf-area">
           ${areasSorted().map(a => `<option value="${a.id}" ${a.id === d.areaId ? 'selected' : ''}>${esc(a.name)}</option>`).join('')}<option value="" ${typeId(d.areaId) ? '' : 'selected'}>${NONE.name}</option></select></label>
-        <label class="f">状态<select class="field" name="status" id="tf-status">
-          ${STATUS.map(s => `<option value="${s.id}" ${s.id === d.status ? 'selected' : ''}>${s.label}</option>`).join('')}</select></label>
-        <label class="f">截止日期<input class="field" type="date" name="due" id="tf-due" value="${esc(d.due || '')}"></label>
+        <label class="f">${tr('f.status')}<select class="field" name="status" id="tf-status">
+          ${STATUS.map(s => `<option value="${s.id}" ${s.id === d.status ? 'selected' : ''}>${tr('st.' + s.id)}</option>`).join('')}</select></label>
+        <label class="f">${tr('f.due')}<input class="field" type="date" name="due" id="tf-due" value="${esc(d.due || '')}"></label>
       </div>
       <div class="mfoot">
-        ${t ? `<button type="button" class="btn danger sm" data-act="del-task" data-id="${t.id}">删除</button>` : ''}
+        ${t ? `<button type="button" class="btn danger sm" data-act="del-task" data-id="${t.id}">${tr('delete')}</button>` : ''}
         <span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button class="btn primary sm">${t ? '保存' : '添加'}</button>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button class="btn primary sm">${t ? tr('save') : tr('add')}</button>
       </div>
     </form>
   </div>`;
@@ -940,7 +1213,7 @@ function closeModal() {
 function toggleDone(id) {
   const t = T(id); if (!t) return;
   if (t.status === 'done') upd('tasks', id, { status: t.prevStatus && t.prevStatus !== 'done' ? t.prevStatus : 'todo', doneAt: '' });
-  else { upd('tasks', id, { status: 'done', prevStatus: t.status, doneAt: todayStr() }); toast(`完成：${t.title}`); }
+  else { upd('tasks', id, { status: 'done', prevStatus: t.status, doneAt: todayStr() }); toast(tr('task.done', { t: t.title })); }
 }
 function topOrder(status) {
   const os = S.tasks.filter(t => t.status === status).map(t => t.order ?? 0);
@@ -954,14 +1227,14 @@ async function createTask(data) {
   doc.order = topOrder(doc.status);
   if (doc.status === 'done') doc.doneAt = td;
   const ok = await put('tasks', id, doc);
-  if (ok) toast(`已添加：${doc.title}`);
+  if (ok) toast(tr('task.added', { t: doc.title }));
   return ok ? id : false;
 }
 function saveTask(f) {
   const fd = new FormData(f), td = todayStr();
   const title = String(fd.get('title') || '').trim();
   const areaId = String(fd.get('areaId') || '');
-  if (!title) return toast('请填写标题');
+  if (!title) return toast(tr('task.needTitle'));
   const status = String(fd.get('status'));
   const data = {
     title, areaId, status,
@@ -1000,10 +1273,10 @@ async function exportData() {
   const data = { app: '潦草鼠鼠之家 (Weisy)', version: APP_VERSION, exportedAt: new Date().toISOString(), ...Object.fromEntries(COLLECTIONS.map(c => [c, S[c]])) };
   try {
     await S.dl.save({ filename: `weisy-backup-${todayStr()}.json`, data: JSON.stringify(data, null, 2) });
-    toast('备份已保存');
+    toast(tr('exp.saved'));
   } catch (e) {
     if (e && e.code === 'declined') return;
-    toast('导出没有完成，请稍后再试');
+    toast(tr('exp.fail'));
   }
 }
 function setView(v) {
@@ -1018,7 +1291,7 @@ function setView(v) {
 const GRIP = '<svg viewBox="0 0 10 14"><circle cx="3" cy="2.5" r="1.3"/><circle cx="7" cy="2.5" r="1.3"/><circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="3" cy="11.5" r="1.3"/><circle cx="7" cy="11.5" r="1.3"/></svg>';
 const addDays = (s, n) => { const d = new Date(parseD(s) + n * 86400000); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`; };
 const mondayOf = s => addDays(s, -((new Date(parseD(s)).getUTCDay() + 6) % 7));
-const cnDate = s => { const [, m, d] = s.split('-').map(Number); return `${m}月${d}日`; };
+const cnDate = s => { const [, m, d] = s.split('-').map(Number); return tr('date.long', { m, d }); };
 const isUrl = v => /^https?:\/\/\S+$/i.test(String(v || '').trim());
 const maxOrder = list => Math.max(0, ...list.map(x => x.order ?? 0));
 /* New fractional order from the dropped item's neighbours. */
@@ -1045,9 +1318,12 @@ function endDrag() {
 const recentlyDragged = () => Date.now() - S.justDragged < 300;
 
 /* ================= Module: 副业 ================= */
-const GP_STATUS = [['research', '调研中'], ['applied', '已申请'], ['testing', '测试中'], ['approved', '已通过'], ['failed', '未通过'], ['paused', '暂停']];
-const GJ_STATUS = [['active', '进行中'], ['completed', '已完成'], ['paid', '已结算']];
-const GLABEL = Object.fromEntries([...GP_STATUS, ...GJ_STATUS]);
+const GP_STATUS = ['research', 'applied', 'testing', 'approved', 'failed', 'paused'];
+const GJ_STATUS = ['active', 'completed', 'paid'];
+const gLabel = s => (GP_STATUS.includes(s) || GJ_STATUS.includes(s) ? tr('gs.' + s) : '');
+/* What a side gig calls its two levels (saved with it); unnamed = the default words of the current language. */
+const platLabel = p => (p && p.platformLabel) || tr('g.lbl.plat');
+const projLabel = p => (p && p.projectLabel) || tr('g.lbl.proj');
 const GPILL = { research: '', applied: '', testing: 'active', approved: 'done', failed: 'paused', paused: 'paused', active: 'active', completed: '', paid: 'done' };
 const CUR = { EUR: '€', USD: '$' };
 const G = id => S.gigs.find(g => g.id === id);
@@ -1070,9 +1346,9 @@ function currentPath() {
 function gigProjectRow(g) {
   return `<button class="gproj" data-act="gig-edit" data-id="${g.id}">
     <span class="t">${esc(g.name)}</span>
-    <span class="pill ${GPILL[g.status] || ''}">${GLABEL[g.status] || ''}</span>
+    <span class="pill ${GPILL[g.status] || ''}">${gLabel(g.status)}</span>
     ${Number(g.earned) ? `<span class="money">${fmtMoney(g.currency || 'EUR', Number(g.earned))}</span>` : ''}
-    ${g.startedAt ? `<span class="due">${md(g.startedAt)}${g.endedAt ? ' – ' + md(g.endedAt) : ' 起'}</span>` : ''}
+    ${g.startedAt ? `<span class="due">${g.endedAt ? md(g.startedAt) + ' – ' + md(g.endedAt) : tr('dv.since', { md: md(g.startedAt) })}</span>` : ''}
   </button>`;
 }
 function gigPlatform(p, path) {
@@ -1080,19 +1356,19 @@ function gigPlatform(p, path) {
   const sums = earnSums(projects);
   return `<section class="gplat" data-id="${p.id}">
     <header class="gplat-h">
-      <span class="gp-grip" title="拖动调整顺序" aria-hidden="true">${GRIP}</span>
-      <button class="name" data-act="gig-edit" data-id="${p.id}" title="编辑">${esc(p.name)}</button>
-      <span class="pill ${GPILL[p.status] || ''}">${GLABEL[p.status] || ''}</span>
+      <span class="gp-grip" title="${tr('dv.grip')}" aria-hidden="true">${GRIP}</span>
+      <button class="name" data-act="gig-edit" data-id="${p.id}" title="${tr('edit')}">${esc(p.name)}</button>
+      <span class="pill ${GPILL[p.status] || ''}">${gLabel(p.status)}</span>
       ${p.pay ? `<span class="meta2">${esc(p.pay)}</span>` : ''}
-      ${isUrl(p.link) ? `<a class="ext" href="${esc(p.link.trim())}" target="_blank" rel="noopener">打开网站 ↗</a>` : ''}
+      ${isUrl(p.link) ? `<a class="ext" href="${esc(p.link.trim())}" target="_blank" rel="noopener">${tr('g.openSite')}</a>` : ''}
       <span class="sp"></span>
-      <span class="meta2">${projects.length} 个${esc(path.projectLabel || '项目')}${Object.keys(sums).length ? ` · 已赚 ${moneyText(sums)}` : ''}</span>
+      <span class="meta2">${tr('g.platMeta', { n: projects.length, label: esc(projLabel(path)), earned: Object.keys(sums).length ? moneyText(sums) : '' })}</span>
     </header>
     ${p.notes ? `<p class="gnote">${esc(p.notes)}</p>` : ''}
     ${projects.length ? `<div class="gprojs">${projects.map(gigProjectRow).join('')}</div>` : ''}
     <form class="inline-add" data-form="gig-proj-add" data-pid="${p.id}">
-      <input class="field" name="name" placeholder="添加${esc(path.projectLabel || '项目')}，回车保存" aria-label="添加${esc(path.projectLabel || '项目')}" autocomplete="off">
-      <button class="btn sm">添加</button>
+      <input class="field" name="name" placeholder="${tr('g.projAdd.ph', { label: esc(projLabel(path)) })}" aria-label="${tr('g.projAdd', { label: esc(projLabel(path)) })}" autocomplete="off">
+      <button class="btn sm">${tr('add')}</button>
     </form>
   </section>`;
 }
@@ -1100,26 +1376,26 @@ function renderGigs() {
   const paths = [...S.gigPaths].sort(byOrder);
   const cur = currentPath();
   const allProjects = S.gigs.filter(g => g.kind === 'project');
-  const head = `<div class="view-head gig-head"><h1>副业</h1><img class="gig-mouse" src="${MOUSE_GIGS_IMG}" alt="">
-    <div class="gstats"><span><b>${moneyText(earnSums(allProjects))}</b>累计已赚</span><span><b>${moneyText(earnSums(allProjects, true))}</b>本月</span></div></div>`;
-  const tabs = `<div class="ptabs" role="group" aria-label="副业">
+  const head = `<div class="view-head gig-head"><h1>${tr('g.title')}</h1><img class="gig-mouse" src="${MOUSE_GIGS_IMG}" alt="">
+    <div class="gstats"><span><b>${moneyText(earnSums(allProjects))}</b>${tr('g.total')}</span><span><b>${moneyText(earnSums(allProjects, true))}</b>${tr('g.month')}</span></div></div>`;
+  const tabs = `<div class="ptabs" role="group" aria-label="${tr('g.title')}">
     ${paths.map(p => `<button class="chip" data-act="gpath" data-id="${p.id}" aria-pressed="${cur && cur.id === p.id}">${esc(p.name)}<span class="n">${S.gigs.filter(g => g.kind === 'platform' && g.pathId === p.id).length}</span></button>`).join('')}
-    <button class="chip add" data-act="gpath-new">＋ 新副业</button></div>`;
-  if (!cur) return `${head}${tabs}<div class="state"><strong>还没有副业</strong>点「＋ 新副业」开始记录，比如接设计单、做翻译、开网店。</div>`;
+    <button class="chip add" data-act="gpath-new">${tr('g.new')}</button></div>`;
+  if (!cur) return `${head}${tabs}<div class="state">${tr('g.empty')}</div>`;
   const plats = S.gigs.filter(g => g.kind === 'platform' && g.pathId === cur.id).sort(byOrder);
   const curSums = earnSums(allProjects.filter(g => g.pathId === cur.id));
   // the 副业 buttons (left) and 编辑副业 / ＋ 添加平台 (right) share one row; the note line only shows when there is text
-  const note = `${cur.note ? esc(cur.note) : ''}${Object.keys(curSums).length ? `${cur.note ? ' · ' : ''}这项副业已赚 ${moneyText(curSums)}` : ''}`;
+  const note = `${cur.note ? esc(cur.note) : ''}${Object.keys(curSums).length ? `${cur.note ? ' · ' : ''}${tr('g.pathEarned', { e: moneyText(curSums) })}` : ''}`;
   return `${head}
     <div class="grow">${tabs}
       <div class="gacts">
-        <button class="btn ghost sm" data-act="gpath-edit" data-id="${cur.id}">编辑副业</button>
-        <button class="btn sm" data-act="gig-new-plat" data-id="${cur.id}">＋ 添加${esc(cur.platformLabel || '平台')}</button>
+        <button class="btn ghost sm" data-act="gpath-edit" data-id="${cur.id}">${tr('g.editPath')}</button>
+        <button class="btn sm" data-act="gig-new-plat" data-id="${cur.id}">${tr('g.addPlat', { label: esc(platLabel(cur)) })}</button>
       </div>
     </div>
     ${note ? `<p class="gnote-line">${note}</p>` : ''}
     ${plats.length ? `<div class="glist">${plats.map(p => gigPlatform(p, cur)).join('')}</div>`
-      : `<div class="area-empty gig-empty">还没有${esc(cur.platformLabel || '平台')}，点右上角添加。</div>`}`;
+      : `<div class="area-empty gig-empty">${tr('g.noPlat', { label: esc(platLabel(cur)) })}</div>`}`;
 }
 function mountGigs() {
   const list = $('.glist');
@@ -1138,38 +1414,38 @@ function openGig(id, preset = {}) {
   const d = g || { kind: preset.kind, pathId: preset.pathId, parentId: preset.parentId || '', name: '', status: preset.kind === 'project' ? 'active' : 'research', link: '', pay: '', earned: '', currency: 'EUR', startedAt: '', endedAt: '', notes: '' };
   const path = GPath(d.pathId) || {};
   const isPlat = d.kind === 'platform';
-  const label = isPlat ? (path.platformLabel || '平台') : (path.projectLabel || '项目');
+  const label = isPlat ? platLabel(path) : projLabel(path);
   const statuses = isPlat ? GP_STATUS : GJ_STATUS;
   const childCount = isPlat && g ? S.gigs.filter(x => x.parentId === g.id).length : 0;
   S.modal = { kind: 'gig', id: g ? g.id : null, returnFocus: document.activeElement, draft: d };
   const box = $('#modal');
   box.innerHTML = `<div class="scrim" data-act="close-modal"></div>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="gf-h">
-    <h2 id="gf-h">${g ? '编辑' : '添加'}${esc(label)}</h2>
+    <h2 id="gf-h">${tr(g ? 'g.m.edit' : 'g.m.add', { label: esc(label) })}</h2>
     <form class="form" data-form="gig">
       <div class="grid2">
-        <label class="f">名称<input class="field" name="name" id="gf-name" value="${esc(d.name)}" required autocomplete="off"></label>
-        <label class="f">状态<select class="field" name="status" id="gf-status">
-          ${statuses.map(([k, v]) => `<option value="${k}" ${k === d.status ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+        <label class="f">${tr('f.name')}<input class="field" name="name" id="gf-name" value="${esc(d.name)}" required autocomplete="off"></label>
+        <label class="f">${tr('f.status')}<select class="field" name="status" id="gf-status">
+          ${statuses.map(k => `<option value="${k}" ${k === d.status ? 'selected' : ''}>${gLabel(k)}</option>`).join('')}</select></label>
       </div>
       ${isPlat ? `<div class="grid2">
-        <label class="f">网址<input class="field" name="link" id="gf-link" value="${esc(d.link || '')}" placeholder="https://" autocomplete="off"></label>
-        <label class="f">报酬说明<input class="field" name="pay" id="gf-pay" value="${esc(d.pay || '')}" placeholder="例如：$20/小时" autocomplete="off"></label>
+        <label class="f">${tr('g.link')}<input class="field" name="link" id="gf-link" value="${esc(d.link || '')}" placeholder="https://" autocomplete="off"></label>
+        <label class="f">${tr('g.pay')}<input class="field" name="pay" id="gf-pay" value="${esc(d.pay || '')}" placeholder="${tr('g.pay.ph')}" autocomplete="off"></label>
       </div>` : `<div class="grid2">
-        <label class="f">已赚金额<input class="field" type="number" min="0" step="0.01" name="earned" id="gf-earned" value="${esc(d.earned ?? '')}"></label>
-        <label class="f">币种<select class="field" name="currency" id="gf-cur">
+        <label class="f">${tr('g.earned')}<input class="field" type="number" min="0" step="0.01" name="earned" id="gf-earned" value="${esc(d.earned ?? '')}"></label>
+        <label class="f">${tr('g.cur')}<select class="field" name="currency" id="gf-cur">
           ${Object.keys(CUR).map(c => `<option value="${c}" ${c === (d.currency || 'EUR') ? 'selected' : ''}>${c} ${CUR[c]}</option>`).join('')}</select></label>
       </div>
       <div class="grid2">
-        <label class="f">开始日期<input class="field" type="date" name="startedAt" id="gf-start" value="${esc(d.startedAt || '')}"></label>
-        <label class="f">结束 / 结算日期<input class="field" type="date" name="endedAt" id="gf-end" value="${esc(d.endedAt || '')}"></label>
+        <label class="f">${tr('g.start')}<input class="field" type="date" name="startedAt" id="gf-start" value="${esc(d.startedAt || '')}"></label>
+        <label class="f">${tr('g.end')}<input class="field" type="date" name="endedAt" id="gf-end" value="${esc(d.endedAt || '')}"></label>
       </div>`}
-      <label class="f">备注<textarea class="field" name="notes" id="gf-notes" rows="3">${esc(d.notes || '')}</textarea></label>
+      <label class="f">${tr('d.notes')}<textarea class="field" name="notes" id="gf-notes" rows="3">${esc(d.notes || '')}</textarea></label>
       <div class="mfoot">
-        ${g ? `<button type="button" class="btn danger sm" data-act="gig-del" data-id="${g.id}" data-confirm="${childCount ? `再点一次：连同 ${childCount} 个${esc(path.projectLabel || '项目')}一起删除` : '再点一次确认删除'}">删除</button>` : ''}
+        ${g ? `<button type="button" class="btn danger sm" data-act="gig-del" data-id="${g.id}" data-confirm="${childCount ? tr('g.delN', { n: childCount, label: esc(projLabel(path)) }) : tr('confirmDel')}">${tr('delete')}</button>` : ''}
         <span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button class="btn primary sm">${g ? '保存' : '添加'}</button>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button class="btn primary sm">${g ? tr('save') : tr('add')}</button>
       </div>
     </form>
   </div>`;
@@ -1179,7 +1455,7 @@ function openGig(id, preset = {}) {
 function saveGig(f) {
   const fd = new FormData(f);
   const name = String(fd.get('name') || '').trim();
-  if (!name) return toast('请填写名称');
+  if (!name) return toast(tr('g.needName'));
   const g = S.modal.id ? G(S.modal.id) : null;
   const base = g || S.modal.draft;
   const data = { name, status: String(fd.get('status')), notes: String(fd.get('notes') || '').trim() };
@@ -1197,36 +1473,36 @@ function saveGig(f) {
   if (g) upd('gigs', g.id, data);
   else {
     const doc = { kind: base.kind, pathId: base.pathId, parentId: base.parentId || '', link: '', pay: '', earned: '', currency: 'EUR', startedAt: '', endedAt: '', ...data, order: maxOrder(S.gigs) + 1, createdAt: todayStr() };
-    put('gigs', newId('gigs'), doc).then(ok => { if (ok) toast(`已添加：${name}`); });
+    put('gigs', newId('gigs'), doc).then(ok => { if (ok) toast(tr('task.added', { t: name })); });
   }
 }
 function deleteGig(id) {
   const g = G(id); if (!g) return;
   S.gigs.filter(x => x.parentId === id).forEach(x => del('gigs', x.id));
   del('gigs', id);
-  toast(`已删除：${g.name}`);
+  toast(tr('dv.deleted', { t: g.name }));
 }
 function openPath(id) {
   const p = id ? GPath(id) : null;
-  const d = p || { name: '', platformLabel: '平台', projectLabel: '项目', note: '' };
+  const d = p || { name: '', platformLabel: tr('g.lbl.plat'), projectLabel: tr('g.lbl.proj'), note: '' };
   const n = p ? S.gigs.filter(g => g.pathId === p.id).length : 0;
   S.modal = { kind: 'path', id: p ? p.id : null, returnFocus: document.activeElement };
   const box = $('#modal');
   box.innerHTML = `<div class="scrim" data-act="close-modal"></div>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pf2-h">
-    <h2 id="pf2-h">${p ? '编辑副业' : '新副业'}</h2>
+    <h2 id="pf2-h">${p ? tr('g.editPath') : tr('g.p.new')}</h2>
     <form class="form" data-form="path">
-      <label class="f">名称<input class="field" name="name" id="gp-name" value="${esc(d.name)}" placeholder="例如：接设计单、做翻译、开网店" required autocomplete="off"></label>
+      <label class="f">${tr('f.name')}<input class="field" name="name" id="gp-name" value="${esc(d.name)}" placeholder="${tr('g.p.name.ph')}" required autocomplete="off"></label>
       <div class="grid2">
-        <label class="f">第一层叫什么<input class="field" name="platformLabel" id="gp-l1" value="${esc(d.platformLabel || '平台')}" placeholder="平台 / 客户 / 店铺" autocomplete="off"></label>
-        <label class="f">第二层叫什么<input class="field" name="projectLabel" id="gp-l2" value="${esc(d.projectLabel || '项目')}" placeholder="项目 / 订单 / 产品" autocomplete="off"></label>
+        <label class="f">${tr('g.p.l1')}<input class="field" name="platformLabel" id="gp-l1" value="${esc(platLabel(d))}" placeholder="${tr('g.p.l1.ph')}" autocomplete="off"></label>
+        <label class="f">${tr('g.p.l2')}<input class="field" name="projectLabel" id="gp-l2" value="${esc(projLabel(d))}" placeholder="${tr('g.p.l2.ph')}" autocomplete="off"></label>
       </div>
-      <label class="f">说明（选填）<input class="field" name="note" id="gp-note" value="${esc(d.note || '')}" autocomplete="off"></label>
+      <label class="f">${tr('g.p.note')}<input class="field" name="note" id="gp-note" value="${esc(d.note || '')}" autocomplete="off"></label>
       <div class="mfoot">
-        ${p ? `<button type="button" class="btn danger sm" data-act="gpath-del" data-id="${p.id}" data-confirm="${n ? `再点一次：连同 ${n} 条记录一起删除` : '再点一次确认删除'}">删除副业</button>` : ''}
+        ${p ? `<button type="button" class="btn danger sm" data-act="gpath-del" data-id="${p.id}" data-confirm="${n ? tr('g.p.delN', { n }) : tr('confirmDel')}">${tr('g.p.del')}</button>` : ''}
         <span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button class="btn primary sm">${p ? '保存' : '创建'}</button>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button class="btn primary sm">${p ? tr('save') : tr('create')}</button>
       </div>
     </form>
   </div>`;
@@ -1236,11 +1512,11 @@ function openPath(id) {
 function savePath(f) {
   const fd = new FormData(f);
   const name = String(fd.get('name') || '').trim();
-  if (!name) return toast('请填写副业名称');
+  if (!name) return toast(tr('g.p.needName'));
   const data = {
     name, note: String(fd.get('note') || '').trim(),
-    platformLabel: String(fd.get('platformLabel') || '').trim() || '平台',
-    projectLabel: String(fd.get('projectLabel') || '').trim() || '项目',
+    platformLabel: String(fd.get('platformLabel') || '').trim() || tr('g.lbl.plat'),
+    projectLabel: String(fd.get('projectLabel') || '').trim() || tr('g.lbl.proj'),
   };
   const id = S.modal.id;
   closeModal();
@@ -1249,7 +1525,7 @@ function savePath(f) {
     const nid = newId('gigPaths');
     put('gigPaths', nid, { ...data, order: maxOrder(S.gigPaths) + 1, createdAt: todayStr() });
     S.gigPath = nid; lsSet('weisy.gpath', nid);
-    toast(`已创建：${name}`);
+    toast(tr('g.p.created', { t: name }));
   }
 }
 function deletePath(id) {
@@ -1257,7 +1533,7 @@ function deletePath(id) {
   S.gigs.filter(g => g.pathId === id).forEach(g => del('gigs', g.id));
   del('gigPaths', id);
   S.gigPath = ''; lsSet('weisy.gpath', '');
-  toast(`已删除副业：${p.name}`);
+  toast(tr('g.p.deleted', { t: p.name }));
 }
 
 /* ================= Module: 习惯 ================= */
@@ -1294,7 +1570,7 @@ function weekCount(hid) {
   return n;
 }
 function entrySummary(e) {
-  return [(e.tags || []).join('、'), e.mins ? `${e.mins} 分钟` : '', e.did || ''].filter(Boolean).join(' · ');
+  return [(e.tags || []).join(tr('h.sep')), e.mins ? tr('h.mins', { n: e.mins }) : '', e.did || ''].filter(Boolean).join(' · ');
 }
 function heatmap(h) {
   const td = todayStr(), weeks = heatWeeks(h.id), start = addDays(mondayOf(td), -(weeks - 1) * 7);
@@ -1304,25 +1580,25 @@ function heatmap(h) {
     // label a month where it starts, skipping labels that would crowd the previous one
     const show = mo !== prevMonth && w - lastLabel >= 3 && (w > 0 || addDays(start, 14).slice(5, 7) === mo);
     if (show) lastLabel = w;
-    months += `<span>${show ? Number(mo) + '月' : ''}</span>`;
+    months += `<span>${show ? tr('h.month', { m: Number(mo) }) : ''}</span>`;
     prevMonth = mo;
     for (let i = 0; i < 7; i++) {
       const d = addDays(start, w * 7 + i);
       if (d > td) { cells += '<span class="hm-cell future"></span>'; continue; }
       const e = entryOf(h.id, d), s = e ? entrySummary(e) : '';
-      cells += `<button class="hm-cell ${e ? 'on' : ''} ${d === td ? 'today' : ''}" data-act="habit-day" data-h="${h.id}" data-d="${d}" title="${cnDate(d)} ${weekday(d)}${e ? (s ? '：' + esc(s) : '：已打卡') : '（未打卡，点一下补打卡）'}" aria-label="${cnDate(d)}${e ? ' 已打卡' : ' 未打卡'}"></button>`;
+      cells += `<button class="hm-cell ${e ? 'on' : ''} ${d === td ? 'today' : ''}" data-act="habit-day" data-h="${h.id}" data-d="${d}" title="${cnDate(d)} ${weekday(d)}${e ? tr('h.colon') + (s ? esc(s) : tr('h.checked')) : tr('h.cell.off')}" aria-label="${cnDate(d)}${e ? tr('h.aria.on') : tr('h.aria.off')}"></button>`;
     }
   }
   return `<div class="hm-wrap"><div class="hm">
     <div class="hm-months">${months}</div>
-    <div class="hm-wd"><span>一</span><span></span><span>三</span><span></span><span>五</span><span></span><span>日</span></div>
+    <div class="hm-wd">${tr('h.wdRow')}</div>
     <div class="hm-grid">${cells}</div></div></div>`;
 }
 function entryItem(h, e, full) {
   const s = entrySummary(e);
   const note = e.note ? (full ? e.note : e.note.split('\n')[0].slice(0, 120) + (e.note.length > 120 || e.note.includes('\n') ? '…' : '')) : '';
   return `<li><button data-act="habit-day" data-h="${h.id}" data-d="${e.date}"><span class="date">${md(e.date)} ${weekday(e.date)}</span>
-    <span class="sum">${s ? esc(s) : '<span class="muted">已打卡</span>'}</span>
+    <span class="sum">${s ? esc(s) : `<span class="muted">${tr('h.checked')}</span>`}</span>
     ${note ? `<span class="note">${esc(note)}</span>` : ''}</button></li>`;
 }
 function habitPanel(h) {
@@ -1333,26 +1609,26 @@ function habitPanel(h) {
   const shown = open ? entries.filter(e => !q || `${entrySummary(e)} ${e.note || ''}`.toLowerCase().includes(q)) : entries.slice(0, 3);
   return `<section class="hpanel" data-id="${h.id}" style="--c:${esc(h.color)}">
     <header class="hp-h">
-      <span class="hp-grip" title="拖动调整顺序" aria-hidden="true">${GRIP}</span>
+      <span class="hp-grip" title="${tr('dv.grip')}" aria-hidden="true">${GRIP}</span>
       <h2><i></i>${esc(h.name)}</h2>
-      <span class="hp-stat">连续 <b>${streak(h.id)}</b> 天 · 本周 <b>${weekCount(h.id)}</b> 次 · 累计 <b>${entries.length}</b> 次</span>
+      <span class="hp-stat">${tr('h.stat', { s: streak(h.id), w: weekCount(h.id), t: entries.length })}</span>
       <span class="sp"></span>
-      <button class="btn sm ${done ? 'done-today' : 'primary'}" data-act="habit-day" data-h="${h.id}" data-d="${td}">${done ? '✓ 今天已打卡' : '今天打卡'}</button>
-      <button class="btn ghost sm" data-act="habit-edit" data-h="${h.id}">编辑</button>
+      <button class="btn sm ${done ? 'done-today' : 'primary'}" data-act="habit-day" data-h="${h.id}" data-d="${td}">${done ? tr('h.doneToday') : tr('h.checkin')}</button>
+      <button class="btn ghost sm" data-act="habit-edit" data-h="${h.id}">${tr('edit')}</button>
     </header>
     ${heatmap(h)}
-    ${open ? `<input class="field hsearch" type="search" id="hq-${h.id}" data-h="${h.id}" placeholder="搜索${h.longNote ? '笔记' : '记录'}" value="${esc(S.habitQ[h.id] || '')}" aria-label="搜索${esc(h.name)}的记录">` : ''}
-    ${shown.length ? `<ul class="hrecent">${shown.map(e => entryItem(h, e, open)).join('')}</ul>` : (entries.length ? '<p class="empty-note">没有匹配的记录。</p>' : '<p class="empty-note">还没有打卡记录。</p>')}
-    ${entries.length > 3 || open ? `<button class="more" data-act="habit-all" data-h="${h.id}">${open ? '收起' : `全部${h.longNote ? '笔记' : '记录'}（${entries.length}）`}</button>` : ''}
+    ${open ? `<input class="field hsearch" type="search" id="hq-${h.id}" data-h="${h.id}" placeholder="${tr(h.longNote ? 'h.search.notes' : 'h.search.records')}" value="${esc(S.habitQ[h.id] || '')}" aria-label="${tr('h.search.label', { n: esc(h.name) })}">` : ''}
+    ${shown.length ? `<ul class="hrecent">${shown.map(e => entryItem(h, e, open)).join('')}</ul>` : `<p class="empty-note">${tr(entries.length ? 'h.noMatch' : 'h.noRecords')}</p>`}
+    ${entries.length > 3 || open ? `<button class="more" data-act="habit-all" data-h="${h.id}">${open ? tr('h.collapse') : tr(h.longNote ? 'h.all.notes' : 'h.all.records', { n: entries.length })}</button>` : ''}
   </section>`;
 }
 /* The little mouse watering a sprout, next to 「＋ 新习惯」. */
 const MOUSE_WALK_IMG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjAwIj48cGF0aCBkPSJNOCAxNTAgTDUwIDE1MCBMNDQgMTg2IEwxNCAxODYgWiIgZmlsbD0iI0Q5OEE1RiIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxyZWN0IHg9IjQiIHk9IjE0MiIgd2lkdGg9IjUwIiBoZWlnaHQ9IjExIiByeD0iMyIgZmlsbD0iI0UyOUI3MSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIvPjxwYXRoIGQ9Ik0yOSAxNDIgQzI5IDEyOCAyOSAxMjAgMjkgMTEyIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjkgMTIyIEMxNyAxMjAgMTEgMTEwIDEzIDEwMiBDMjMgMTAyIDI5IDExMCAyOSAxMjIgWiIgZmlsbD0iIzZDQzI4QSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjkgMTE2IEMzOSAxMTIgNDcgMTAyIDQ1IDk0IEMzNSA5NCAyOSAxMDQgMjkgMTE2IFoiIGZpbGw9IiM2Q0MyOEEiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTQ3IDExNiBxLTMgNiAwIDggcTMgLTIgMCAtOCBaIE00MSAxMjYgcS0zIDYgMCA4IHEzIC0yIDAgLTggWiBNNTEgMTI5IHEtMyA2IDAgOCBxMyAtMiAwIC04IFoiIGZpbGw9IiM3QUIzRjAiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NiAwKSI+PHBhdGggZD0iTTEzOCAxNTggQzE3MiAxNjIgMTgyIDEzNiAxNjggMTIyIEMxNjAgMTE0IDE1MCAxMjIgMTU4IDEzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMzggMTU4IEMxNzIgMTYyIDE4MiAxMzYgMTY4IDEyMiBDMTYwIDExNCAxNTAgMTIyIDE1OCAxMzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4QTRCMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTQ2IiByeD0iNDIiIHJ5PSIzOCIgZmlsbD0iI0JDQzJDQSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIvPjxlbGxpcHNlIGN4PSIxMDAiIGN5PSIxNTIiIHJ4PSIyNCIgcnk9IjIyIiBmaWxsPSIjRTRFN0VCIi8+PGVsbGlwc2UgY3g9IjgwIiBjeT0iMTgzIiByeD0iMTMiIHJ5PSI3IiBmaWxsPSIjRjJCOEMzIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMyIvPjxlbGxpcHNlIGN4PSIxMjAiIGN5PSIxODMiIHJ4PSIxMyIgcnk9IjciIGZpbGw9IiNGMkI4QzMiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTY2IDEzMiBDNTYgMTI0IDQyIDExMiAzMCAxMDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIHRyYW5zZm9ybT0icm90YXRlKC0yNCAzNiAxMjIpIj48cGF0aCBkPSJNMjQgMTI4IEw0IDEwNCIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNCAxMjggTDQgMTA0IiBzdHJva2U9IiMyQTQzQzAiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMiIgY3k9IjEwMSIgcj0iNS41IiBmaWxsPSIjMkE0M0MwIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xOCAxMjIgTDU0IDEyMiBMNTAgMTU4IEwyMiAxNTggWiIgZmlsbD0iIzJBNDNDMCIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNiAxMjIgQzI2IDEwNCA0NiAxMDQgNDYgMTIyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41Ii8+PGNpcmNsZSBjeD0iMzciIGN5PSIxMDYiIHI9IjYuNSIgZmlsbD0iI0YyQjhDMyIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiLz48L2c+PHBhdGggZD0iTTEzNCAxNDAgQzE0MCAxNTAgMTM2IDE2MCAxMjggMTY0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMjYiIGN5PSIxNjUiIHI9IjYuNSIgZmlsbD0iI0YyQjhDMyIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSI2NCIgY3k9IjUwIiByPSIyNCIgZmlsbD0iI0JDQzJDQSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIvPjxjaXJjbGUgY3g9IjY0IiBjeT0iNTAiIHI9IjE0IiBmaWxsPSIjRjJCOEMzIi8+PGNpcmNsZSBjeD0iMTM2IiBjeT0iNTAiIHI9IjI0IiBmaWxsPSIjQkNDMkNBIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41Ii8+PGNpcmNsZSBjeD0iMTM2IiBjeT0iNTAiIHI9IjE0IiBmaWxsPSIjRjJCOEMzIi8+PGNpcmNsZSBjeD0iMTAwIiBjeT0iODgiIHI9IjQwIiBmaWxsPSIjQkNDMkNBIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41Ii8+PHBhdGggZD0iTTY4IDExNiBDODYgMTI4IDExNCAxMjggMTMyIDExNiBMMTM0IDEyNCBDMTE0IDEzNiA4NiAxMzYgNjYgMTI0IFoiIGZpbGw9IiMyQTQzQzAiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTExNiAxMjggTDEyMiAxNDggTDExMCAxNDYgWiIgZmlsbD0iIzJBNDNDMCIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48ZWxsaXBzZSBjeD0iNzgiIGN5PSI4NCIgcng9IjQuNSIgcnk9IjYiIGZpbGw9IiMyQjJGMzYiLz48ZWxsaXBzZSBjeD0iMTA2IiBjeT0iODQiIHJ4PSI0LjUiIHJ5PSI2IiBmaWxsPSIjMkIyRjM2Ii8+PGNpcmNsZSBjeD0iNzkuNSIgY3k9IjgxLjUiIHI9IjEuNiIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjEwNy41IiBjeT0iODEuNSIgcj0iMS42IiBmaWxsPSIjZmZmIi8+PGVsbGlwc2UgY3g9IjY4IiBjeT0iOTgiIHJ4PSI3IiByeT0iNC41IiBmaWxsPSIjRjJCOEMzIiBvcGFjaXR5PSIuOCIvPjxlbGxpcHNlIGN4PSIxMTYiIGN5PSI5OCIgcng9IjciIHJ5PSI0LjUiIGZpbGw9IiNGMkI4QzMiIG9wYWNpdHk9Ii44Ii8+PGVsbGlwc2UgY3g9IjkyIiBjeT0iOTYiIHJ4PSI1LjUiIHJ5PSI0IiBmaWxsPSIjRTI3QzkxIi8+PHBhdGggZD0iTTg2IDEwMiBxMyA0IDYgMCBxMyA0IDYgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjIuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTY0IDk0IGwtMTYgLTMgTTY0IDEwMCBsLTE2IDMgTTEzNiA5NCBsMTYgLTMgTTEzNiAxMDAgbDE2IDMiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4NCg==';
 function renderHabits() {
   const hs = habitsSorted();
-  return `<div class="view-head hab-head"><h1>习惯</h1>${cheerHtml(S.habCheerAt, 'hab-cheer', HAB_CHEER)}<img class="hab-mouse" src="${MOUSE_WALK_IMG}" alt=""><button class="btn sm" data-act="habit-new">＋ 新习惯</button></div>
-    <p class="page-note">点「今天打卡」或热力图里的任意一天，可以打卡、补打卡或修改当天的记录。</p>
-    ${hs.length ? `<div class="hlist">${hs.map(habitPanel).join('')}</div>` : '<div class="state"><strong>还没有习惯</strong>点「＋ 新习惯」添加。</div>'}`;
+  return `<div class="view-head hab-head"><h1>${tr('h.title')}</h1>${cheerHtml(S.habCheerAt, 'hab-cheer', HAB_CHEER)}<img class="hab-mouse" src="${MOUSE_WALK_IMG}" alt=""><button class="btn sm" data-act="habit-new">${tr('h.new')}</button></div>
+    <p class="page-note">${tr('h.note')}</p>
+    ${hs.length ? `<div class="hlist">${hs.map(habitPanel).join('')}</div>` : `<div class="state">${tr('h.empty')}</div>`}`;
 }
 /* On narrow screens the year scrolls; start at the most recent weeks.
    Habits reorder by dragging the grip; only the moved habit's order is written. */
@@ -1379,17 +1655,17 @@ function openCheckin(hid, date) {
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ci-h" style="--c:${esc(h.color)}">
     <h2 id="ci-h">${esc(h.name)} · ${cnDate(date)} ${weekday(date)}</h2>
     <form class="form" data-form="checkin">
-      ${h.useTags ? `<div class="f"><span>今天做了（可多选）</span>
+      ${h.useTags ? `<div class="f"><span>${tr('ci.tags')}</span>
         <div class="tagset" id="ci-tags">${known.map(tagBtn).join('')}</div>
-        <div class="tagadd"><input class="field" id="ci-newtag" placeholder="新选项" aria-label="新选项" autocomplete="off"><button type="button" class="btn sm" data-act="ci-tag-add">＋ 添加</button></div></div>` : ''}
-      ${h.mins ? `<label class="f">时长（分钟，选填）<input class="field" type="number" min="0" step="1" name="mins" id="ci-mins" value="${esc(e.mins ?? '')}"></label>` : ''}
-      <label class="f">${esc(h.didLabel || '做了什么')}（选填）<input class="field" name="did" id="ci-did" value="${esc(e.did || '')}" autocomplete="off"></label>
-      ${h.longNote ? `<label class="f">笔记（选填）<textarea class="field" name="note" id="ci-note" rows="8">${esc(e.note || '')}</textarea></label>` : ''}
+        <div class="tagadd"><input class="field" id="ci-newtag" placeholder="${tr('ci.newTag')}" aria-label="${tr('ci.newTag')}" autocomplete="off"><button type="button" class="btn sm" data-act="ci-tag-add">${tr('ci.add')}</button></div></div>` : ''}
+      ${h.mins ? `<label class="f">${tr('ci.mins')}<input class="field" type="number" min="0" step="1" name="mins" id="ci-mins" value="${esc(e.mins ?? '')}"></label>` : ''}
+      <label class="f">${tr('ci.opt', { l: esc(h.didLabel || tr('h.didDefault')) })}<input class="field" name="did" id="ci-did" value="${esc(e.did || '')}" autocomplete="off"></label>
+      ${h.longNote ? `<label class="f">${tr('ci.note')}<textarea class="field" name="note" id="ci-note" rows="8">${esc(e.note || '')}</textarea></label>` : ''}
       <div class="mfoot">
-        ${entryOf(hid, date) ? '<button type="button" class="btn danger sm" data-act="ci-remove">取消这天的打卡</button>' : ''}
+        ${entryOf(hid, date) ? `<button type="button" class="btn danger sm" data-act="ci-remove">${tr('ci.remove')}</button>` : ''}
         <span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button class="btn primary sm">保存打卡</button>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button class="btn primary sm">${tr('ci.save')}</button>
       </div>
     </form>
   </div>`;
@@ -1411,7 +1687,7 @@ function saveCheckin(f) {
   if (h.longNote) entry.note = String(fd.get('note') || '').trim();
   const { hid, date } = m;
   closeModal();
-  writeDay(hid, date, entry).then(ok => { if (ok) { toast(`${h.name}：${date === todayStr() ? '今天' : cnDate(date)}已打卡`); habCheer(); } });
+  writeDay(hid, date, entry).then(ok => { if (ok) { toast(tr('ci.saved', { h: h.name, today: date === todayStr(), d: cnDate(date) })); habCheer(); } });
 }
 function addCheckinTag() {
   const inp = $('#ci-newtag'), t = inp.value.trim(); if (!t) return;
@@ -1425,24 +1701,24 @@ function addCheckinTag() {
 }
 function openHabitForm(hid) {
   const h = hid ? H(hid) : null;
-  const d = h || { name: '', tags: [], useTags: false, mins: false, longNote: false, didLabel: '做了什么' };
+  const d = h || { name: '', tags: [], useTags: false, mins: false, longNote: false, didLabel: tr('h.didDefault') };
   S.modal = { kind: 'habit', id: h ? h.id : null, returnFocus: document.activeElement };
   const box = $('#modal');
   box.innerHTML = `<div class="scrim" data-act="close-modal"></div>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="hf-h">
-    <h2 id="hf-h">${h ? '编辑习惯' : '新习惯'}</h2>
+    <h2 id="hf-h">${h ? tr('hf.edit') : tr('hf.new')}</h2>
     <form class="form" data-form="habit">
-      <label class="f">名称<input class="field" name="name" id="hf-name" value="${esc(d.name)}" required autocomplete="off"></label>
-      <label class="f">打卡时的文字栏叫什么<input class="field" name="didLabel" id="hf-did" value="${esc(d.didLabel || '做了什么')}" autocomplete="off"></label>
-      <label class="checkline"><input type="checkbox" name="useTags" id="hf-usetags" ${d.useTags ? 'checked' : ''}>打卡时可以点选项目</label>
-      <label class="f">可选项目（用顿号或逗号分开）<input class="field" name="tags" id="hf-tags" value="${esc((d.tags || []).join('、'))}" autocomplete="off"></label>
-      <label class="checkline"><input type="checkbox" name="mins" id="hf-mins" ${d.mins ? 'checked' : ''}>记录时长</label>
-      <label class="checkline"><input type="checkbox" name="longNote" id="hf-note" ${d.longNote ? 'checked' : ''}>可以写长笔记</label>
+      <label class="f">${tr('f.name')}<input class="field" name="name" id="hf-name" value="${esc(d.name)}" required autocomplete="off"></label>
+      <label class="f">${tr('hf.did')}<input class="field" name="didLabel" id="hf-did" value="${esc(d.didLabel || tr('h.didDefault'))}" autocomplete="off"></label>
+      <label class="checkline"><input type="checkbox" name="useTags" id="hf-usetags" ${d.useTags ? 'checked' : ''}>${tr('hf.useTags')}</label>
+      <label class="f">${tr('hf.tags')}<input class="field" name="tags" id="hf-tags" value="${esc((d.tags || []).join(tr('h.sep')))}" autocomplete="off"></label>
+      <label class="checkline"><input type="checkbox" name="mins" id="hf-mins" ${d.mins ? 'checked' : ''}>${tr('hf.mins')}</label>
+      <label class="checkline"><input type="checkbox" name="longNote" id="hf-note" ${d.longNote ? 'checked' : ''}>${tr('hf.note')}</label>
       <div class="mfoot">
-        ${h ? `<button type="button" class="btn danger sm" data-act="habit-del" data-h="${h.id}" data-confirm="再点一次：连同全部打卡记录一起删除">删除习惯</button>` : ''}
+        ${h ? `<button type="button" class="btn danger sm" data-act="habit-del" data-h="${h.id}" data-confirm="${tr('hf.delConfirm')}">${tr('hf.del')}</button>` : ''}
         <span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button class="btn primary sm">${h ? '保存' : '添加'}</button>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button class="btn primary sm">${h ? tr('save') : tr('add')}</button>
       </div>
     </form>
   </div>`;
@@ -1452,10 +1728,10 @@ function openHabitForm(hid) {
 function saveHabit(f) {
   const fd = new FormData(f);
   const name = String(fd.get('name') || '').trim();
-  if (!name) return toast('请填写习惯名称');
+  if (!name) return toast(tr('hf.needName'));
   const tags = String(fd.get('tags') || '').split(/[、,，;；\n]/).map(s => s.trim()).filter(Boolean);
   const data = {
-    name, tags: [...new Set(tags)], didLabel: String(fd.get('didLabel') || '').trim() || '做了什么',
+    name, tags: [...new Set(tags)], didLabel: String(fd.get('didLabel') || '').trim() || tr('h.didDefault'),
     useTags: fd.get('useTags') === 'on', mins: fd.get('mins') === 'on', longNote: fd.get('longNote') === 'on',
   };
   const id = S.modal.id;
@@ -1464,14 +1740,14 @@ function saveHabit(f) {
   else {
     const n = S.habits.length;
     put('habits', newId('habits'), { ...data, color: HABIT_COLORS[n % HABIT_COLORS.length], order: maxOrder(S.habits) + 1, archived: false, createdAt: todayStr() })
-      .then(ok => { if (ok) toast(`已添加习惯：${name}`); });
+      .then(ok => { if (ok) toast(tr('hf.added', { t: name })); });
   }
 }
 function deleteHabit(hid) {
   const h = H(hid); if (!h) return;
   S.habitLogs.filter(l => l.habitId === hid).forEach(l => del('habitLogs', l.id));
   del('habits', hid);
-  toast(`已删除习惯：${h.name}`);
+  toast(tr('hf.deleted', { t: h.name }));
 }
 
 /* ================= Import backup ================= */
@@ -1480,24 +1756,24 @@ function readImport(file) {
   const r = new FileReader();
   r.onload = () => {
     let data;
-    try { data = JSON.parse(String(r.result)); } catch { return toast('这个文件不是有效的备份（无法读取 JSON）'); }
+    try { data = JSON.parse(String(r.result)); } catch { return toast(tr('im.bad')); }
     const counts = COLLECTIONS.map(c => [c, Array.isArray(data?.[c]) ? data[c].filter(d => d && typeof d === 'object' && ID_RE.test(String(d.id || ''))).length : 0]).filter(([, n]) => n);
-    if (!counts.length) return toast('这个文件里没有工作台的数据');
+    if (!counts.length) return toast(tr('im.empty'));
     S.modal = { kind: 'import', data, returnFocus: document.activeElement };
     const box = $('#modal');
     box.innerHTML = `<div class="scrim" data-act="close-modal"></div>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="im-h">
-      <h2 id="im-h">导入备份</h2>
-      <p>备份文件：${esc(file.name)}${data.exportedAt ? `（导出于 ${esc(String(data.exportedAt).slice(0, 10))}）` : ''}</p>
-      <ul class="imlist">${counts.map(([c, n]) => `<li>${COLLECTION_NAMES[c] || c}<b>${n}</b> 条</li>`).join('')}</ul>
-      <p class="page-note">同一条记录会被备份里的版本覆盖；工作台里备份没有的记录会保留，不会被删除。</p>
+      <h2 id="im-h">${tr('import.btn')}</h2>
+      <p>${tr('im.file', { f: esc(file.name), at: data.exportedAt ? esc(String(data.exportedAt).slice(0, 10)) : '' })}</p>
+      <ul class="imlist">${counts.map(([c, n]) => `<li>${tr('im.row', { c: tr('col.' + c), n })}</li>`).join('')}</ul>
+      <p class="page-note">${tr('im.note')}</p>
       <div class="mfoot"><span class="sp"></span>
-        <button type="button" class="btn sm" data-act="close-modal">取消</button>
-        <button type="button" class="btn primary sm" data-act="import-go">确认导入</button></div>
+        <button type="button" class="btn sm" data-act="close-modal">${tr('cancel')}</button>
+        <button type="button" class="btn primary sm" data-act="import-go">${tr('im.go')}</button></div>
     </div>`;
     box.hidden = false;
   };
-  r.onerror = () => toast('读取文件失败，请重试');
+  r.onerror = () => toast(tr('im.readFail'));
   r.readAsText(file);
 }
 async function runImport() {
@@ -1509,10 +1785,10 @@ async function runImport() {
       if (!d || typeof d !== 'object' || !ID_RE.test(String(d.id || ''))) continue;
       const { id, ...rest } = d;
       if (await put(c, String(id), rest)) n++; else fail++;
-      if ((n + fail) % 25 === 0) toast(`正在导入… ${n + fail} 条`);
+      if ((n + fail) % 25 === 0) toast(tr('im.progress', { n: n + fail }));
     }
   }
-  toast(fail ? `导入完成：${n} 条成功，${fail} 条失败` : `导入完成：${n} 条`);
+  toast(tr('im.done', { n, fail }));
 }
 
 /* ================= Events (V2 modules) ================= */
@@ -1539,7 +1815,7 @@ document.addEventListener('click', e => {
       el.setAttribute('aria-pressed', String(on)); break;
     }
     case 'ci-tag-add': addCheckinTag(); break;
-    case 'ci-remove': if (armed(el, '再点一次确认取消打卡')) { const { hid: h2, date } = S.modal; closeModal(); writeDay(h2, date, null).then(ok => { if (ok) toast('已取消这天的打卡'); }); } break;
+    case 'ci-remove': if (armed(el, tr('ci.confirmRemove'))) { const { hid: h2, date } = S.modal; closeModal(); writeDay(h2, date, null).then(ok => { if (ok) toast(tr('ci.removed')); }); } break;
     case 'import': $('#importFile').click(); break;
     case 'import-go': runImport(); break;
   }
@@ -1556,7 +1832,7 @@ document.addEventListener('submit', e => {
       const name = String(new FormData(f).get('name') || '').trim(); if (!name) return;
       const plat = G(f.dataset.pid); if (!plat) return;
       put('gigs', newId('gigs'), { kind: 'project', pathId: plat.pathId, parentId: plat.id, name, status: 'active', link: '', pay: '', earned: '', currency: 'EUR', startedAt: todayStr(), endedAt: '', notes: '', order: maxOrder(S.gigs) + 1, createdAt: todayStr() })
-        .then(ok => { if (ok) toast(`已添加：${name}`); });
+        .then(ok => { if (ok) toast(tr('task.added', { t: name })); });
       f.reset(); break;
     }
   }
@@ -1603,9 +1879,11 @@ const trunc = (s, n) => { const c = [...String(s || '')]; return c.slice(0, n).j
 
 /* ---------- suggesting a parent task from the words typed ---------- */
 const SUG_STOP = new Set(['示例', '项目', '一份', '一些', '可以', '然后', '自己', '进行', '我的', '并且', '或者', '的工', '工作', '今天', '一下']);
+/* English filler words never count as a match (the English examples all start with "Example:"). */
+const SUG_STOP_EN = new Set(['example', 'the', 'and', 'for', 'with', 'from', 'into', 'about', 'some', 'this', 'that', 'my', 'to', 'of', 'in', 'on', 'at', 'up', 'do', 'get', 'new', 'one', 'today']);
 function sugTokens(s) {
   const t = String(s || '').toLowerCase();
-  const words = new Set(t.match(/[a-z0-9]{2,}/g) || []);
+  const words = new Set((t.match(/[a-z0-9]{2,}/g) || []).filter(w => !SUG_STOP_EN.has(w)));
   const bi = new Set();
   t.replace(/[^一-鿿]+/g, ' ').split(' ').filter(Boolean).forEach(seg => {
     for (let i = 0; i + 1 < seg.length; i++) { const b = seg.slice(i, i + 2); if (!SUG_STOP.has(b)) bi.add(b); }
@@ -1637,7 +1915,7 @@ function dailyLine(taskId) {
   const ls = dailyLinks(taskId); if (!ls.length) return '';
   const td = todayStr(), mon = mondayOf(td);
   const week = ls.filter(x => x.date >= mon && x.date <= td).length;
-  return `今日清单：本周 ${week} 件 · 最近 ${md(ls[0].date)}`;
+  return tr('dv.linked', { week, last: md(ls[0].date) });
 }
 /* A task's 进展日志 is built from the today-list items linked to it, so it always follows the list
    (ticked, edited, moved, deleted). Entries in the task's own log (if any) join the same timeline. */
@@ -1647,20 +1925,20 @@ function progressLog(t) {
   return [...auto, ...manual].sort((a, b) => b.date.localeCompare(a.date));
 }
 function logEntry(e) {
-  const mark = e.auto ? `<span class="lg-st ${e.done ? 'done' : ''}" aria-label="${e.done ? '已完成' : '未完成'}">${e.done ? '✓' : '○'}</span>` : '';
+  const mark = e.auto ? `<span class="lg-st ${e.done ? 'done' : ''}" aria-label="${e.done ? tr('log.done') : tr('log.undone')}">${e.done ? '✓' : '○'}</span>` : '';
   return `<li><span class="date">${esc(e.date)}</span>
     <span class="txt">${mark}${e.tag ? `<span class="tag">${esc(e.tag)}</span>` : ''}${esc(e.text)}</span>
-    ${e.auto ? '<span></span>' : `<button class="mini-x" data-act="log-del" data-lid="${esc(e.id)}" aria-label="删除这条日志">${ICON.close}</button>`}</li>`;
+    ${e.auto ? '<span></span>' : `<button class="mini-x" data-act="log-del" data-lid="${esc(e.id)}" aria-label="${tr('log.del')}">${ICON.close}</button>`}</li>`;
 }
 
 /* ---------- rendering ---------- */
 /* The little mouse on 今日: says hello by the time of day, and cheers ✨🎉🥳 (bubble hidden meanwhile) for every item ticked off. */
 const MOUSE_IMG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj4KICA8IS0tIHRhaWwgLS0+CiAgPHBhdGggZD0iTTEzOCAxNTggQzE3MiAxNjIgMTgyIDEzNiAxNjggMTIyIEMxNjAgMTE0IDE1MCAxMjIgMTU4IDEzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0xMzggMTU4IEMxNzIgMTYyIDE4MiAxMzYgMTY4IDEyMiBDMTYwIDExNCAxNTAgMTIyIDE1OCAxMzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4QTRCMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8IS0tIGJvZHkgLS0+CiAgPGVsbGlwc2UgY3g9IjEwMCIgY3k9IjE0NiIgcng9IjQyIiByeT0iMzgiIGZpbGw9IiNCQ0MyQ0EiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzLjUiLz4KICA8ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTUyIiByeD0iMjQiIHJ5PSIyMiIgZmlsbD0iI0U0RTdFQiIvPgogIDwhLS0gZmVldCAtLT4KICA8ZWxsaXBzZSBjeD0iODAiIGN5PSIxODMiIHJ4PSIxMyIgcnk9IjciIGZpbGw9IiNGMkI4QzMiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPGVsbGlwc2UgY3g9IjEyMCIgY3k9IjE4MyIgcng9IjEzIiByeT0iNyIgZmlsbD0iI0YyQjhDMyIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiLz4KICA8IS0tIGxlZnQgYXJtIHJlc3RpbmcgLS0+CiAgPHBhdGggZD0iTTY0IDE0MCBDNTYgMTUyIDYwIDE2NCA3MCAxNjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjcyIiBjeT0iMTY1IiByPSI2IiBmaWxsPSIjRjJCOEMzIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gcmlnaHQgYXJtIHdhdmluZyAtLT4KICA8cGF0aCBkPSJNMTM0IDEzMiBDMTQ4IDEyMiAxNTIgMTA0IDE1MCA5MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iODYiIHI9IjgiIGZpbGw9IiNGMkI4QzMiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTE2MiA3OCBsNiAtNSBNMTY0IDg4IGw4IDAgTTE2MCA3MCBsMyAtNyIgc3Ryb2tlPSIjMkE0M0MwIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBlYXJzIC0tPgogIDxjaXJjbGUgY3g9IjY0IiBjeT0iNTAiIHI9IjI0IiBmaWxsPSIjQkNDMkNBIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41Ii8+CiAgPGNpcmNsZSBjeD0iNjQiIGN5PSI1MCIgcj0iMTQiIGZpbGw9IiNGMkI4QzMiLz4KICA8Y2lyY2xlIGN4PSIxMzYiIGN5PSI1MCIgcj0iMjQiIGZpbGw9IiNCQ0MyQ0EiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIzLjUiLz4KICA8Y2lyY2xlIGN4PSIxMzYiIGN5PSI1MCIgcj0iMTQiIGZpbGw9IiNGMkI4QzMiLz4KICA8IS0tIGhlYWQgLS0+CiAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iODgiIHI9IjQwIiBmaWxsPSIjQkNDMkNBIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMy41Ii8+CiAgPCEtLSBzY2FyZiAtLT4KICA8cGF0aCBkPSJNNjggMTE2IEM4NiAxMjggMTE0IDEyOCAxMzIgMTE2IEwxMzQgMTI0IEMxMTQgMTM2IDg2IDEzNiA2NiAxMjQgWiIgZmlsbD0iIzJBNDNDMCIgc3Ryb2tlPSIjM0I0MDQ4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMTE2IDEyOCBMMTIyIDE0OCBMMTEwIDE0NiBaIiBmaWxsPSIjMkE0M0MwIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDwhLS0gZmFjZSAtLT4KICA8ZWxsaXBzZSBjeD0iODYiIGN5PSI4NCIgcng9IjQuNSIgcnk9IjYiIGZpbGw9IiMyQjJGMzYiLz4KICA8ZWxsaXBzZSBjeD0iMTE0IiBjeT0iODQiIHJ4PSI0LjUiIHJ5PSI2IiBmaWxsPSIjMkIyRjM2Ii8+CiAgPGNpcmNsZSBjeD0iODcuNSIgY3k9IjgxLjUiIHI9IjEuNiIgZmlsbD0iI2ZmZiIvPgogIDxjaXJjbGUgY3g9IjExNS41IiBjeT0iODEuNSIgcj0iMS42IiBmaWxsPSIjZmZmIi8+CiAgPGVsbGlwc2UgY3g9Ijc2IiBjeT0iOTgiIHJ4PSI3IiByeT0iNC41IiBmaWxsPSIjRjJCOEMzIiBvcGFjaXR5PSIuOCIvPgogIDxlbGxpcHNlIGN4PSIxMjQiIGN5PSI5OCIgcng9IjciIHJ5PSI0LjUiIGZpbGw9IiNGMkI4QzMiIG9wYWNpdHk9Ii44Ii8+CiAgPGVsbGlwc2UgY3g9IjEwMCIgY3k9Ijk2IiByeD0iNS41IiByeT0iNCIgZmlsbD0iI0UyN0M5MSIvPgogIDxwYXRoIGQ9Ik05NCAxMDIgcTMgNCA2IDAgcTMgNCA2IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNCNDA0OCIgc3Ryb2tlLXdpZHRoPSIyLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik02NCA5NCBsLTE2IC0zIE02NCAxMDAgbC0xNiAzIE0xMzYgOTQgbDE2IC0zIE0xMzYgMTAwIGwxNiAzIiBzdHJva2U9IiMzQjQwNDgiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+Cg==';
 function greeting(h = new Date().getHours()) {
-  if (h >= 5 && h < 12) return '早上好！';
-  if (h >= 12 && h < 18) return '下午好！';
-  if (h >= 18 && h < 23) return '晚上好，辛苦啦';
-  return '夜深了，早点休息';
+  if (h >= 5 && h < 12) return tr('greet.morning');
+  if (h >= 12 && h < 18) return tr('greet.afternoon');
+  if (h >= 18 && h < 23) return tr('greet.evening');
+  return tr('greet.night');
 }
 const CHEER_MS = 2200;
 /* ✨🎉🥳 popping in turn; started at `at` (ms), so a re-render mid-way carries on where it was. */
@@ -1697,7 +1975,7 @@ function todayHeadHtml() {
   const legend = legendItems.length ? `<p class="legend">${legendItems.map(a => `<span style="--c:${esc(a.color)}"><i></i><b>${esc(a.name)}</b>— ${esc(a.desc)}</span>`).join('')}</p>` : '';
   const d = new Date();
   return `<section class="today-head">
-    <h1>${d.getMonth() + 1}月${d.getDate()}日<span>星期${WD[d.getDay()]}</span></h1>
+    <h1>${tr('today.h1', { m: d.getMonth() + 1, d: d.getDate(), w: d.getDay() })}</h1>
   </section>${legend}${palHtml()}`;
 }
 const dvAreas = () => areasSorted().filter(a => a.tier !== 'other');
@@ -1709,8 +1987,8 @@ function dvTaskOptions(it) {
     const ts = pool.filter(t => typeId(t.areaId) === a.id);
     return ts.length ? `<optgroup label="${esc(a.name)}">${ts.map(t => `<option value="${t.id}" ${t.id === it.taskId ? 'selected' : ''}>${esc(trunc(t.title, 24))}</option>`).join('')}</optgroup>` : '';
   }).join('');
-  const gone = it.taskId && !T(it.taskId) ? `<option value="${esc(it.taskId)}" selected>（这个任务已删除）</option>` : '';
-  return `<option value="">— 不归属任务 —</option>${gone}${groups}`;
+  const gone = it.taskId && !T(it.taskId) ? `<option value="${esc(it.taskId)}" selected>${tr('dv.goneTask')}</option>` : '';
+  return `<option value="">${tr('dv.noTask')}</option>${gone}${groups}`;
 }
 /* Move an unfinished item to the end of another day's list (any day but the one shown). It keeps its
    branch and big task and remembers the day list it was first added to (since); "M/D 起" shows only when
@@ -1726,28 +2004,28 @@ async function dvMoveTo(id, target) {
   DV.moving = null;
   if (!(await dvWrite(target, dest))) return;
   await dvWrite(src, dayItems(src).filter(x => x.id !== id));
-  toast(`已移到 ${cnDate(target)}：${trunc(it.text, 20)}`);
+  toast(tr('dv.moved', { date: cnDate(target), t: trunc(it.text, 20) }));
 }
 function dvClosePop() { if (DV.moving) { DV.moving = null; renderMain(); } }
 function dvRow(it) {
   const a = A(it.areaId);
-  const since = it.since && it.since !== DV.date ? `<span class="dv-since" title="从 ${it.since} 开始">${md(it.since)} 起</span>` : '';
+  const since = it.since && it.since !== DV.date ? `<span class="dv-since" title="${tr('dv.since.title', { d: it.since })}">${tr('dv.since', { md: md(it.since) })}</span>` : '';
   const sug = !it.taskId && !it.noSuggest ? dvSuggest(it.text) : null;
   return `<li class="dv-row ${it.done ? 'is-done' : ''}" data-id="${it.id}" style="--c:${esc(a ? a.color : '#9AA19D')}">
-    <span class="dv-grip" title="拖动调整顺序" aria-hidden="true">${GRIP}</span>
-    <button class="check" data-act="dv-toggle" data-id="${it.id}" aria-pressed="${!!it.done}" aria-label="${it.done ? '标记为未完成' : '标记为完成'}">${ICON.check}</button>
+    <span class="dv-grip" title="${tr('dv.grip')}" aria-hidden="true">${GRIP}</span>
+    <button class="check" data-act="dv-toggle" data-id="${it.id}" aria-pressed="${!!it.done}" aria-label="${it.done ? tr('dv.markUndone') : tr('dv.markDone')}">${ICON.check}</button>
     <div class="dv-main">
-      <div class="dv-textrow"><input class="dv-text" id="dvt-${it.id}" data-id="${it.id}" value="${esc(it.text)}" aria-label="内容" autocomplete="off">${since}</div>
+      <div class="dv-textrow"><input class="dv-text" id="dvt-${it.id}" data-id="${it.id}" value="${esc(it.text)}" aria-label="${tr('dv.text')}" autocomplete="off">${since}</div>
       <div class="dv-meta">
-        <select class="dv-area" id="dva-${it.id}" data-id="${it.id}" aria-label="类型">
+        <select class="dv-area" id="dva-${it.id}" data-id="${it.id}" aria-label="${tr('dv.type')}">
           ${dvAreaOptions(it.areaId)}
         </select>
-        <select class="dv-task" id="dvk-${it.id}" data-id="${it.id}" aria-label="归属的任务">${dvTaskOptions(it)}</select>
-        ${sug ? `<span class="dv-sug"><button data-act="dv-link" data-id="${it.id}" data-task="${sug.id}" title="${esc(sug.title)}">可能属于：${esc(trunc(sug.title, 16))} · 关联</button><button class="dv-sx" data-act="dv-nosug" data-id="${it.id}" title="不是这个" aria-label="不是这个">×</button></span>` : ''}
+        <select class="dv-task" id="dvk-${it.id}" data-id="${it.id}" aria-label="${tr('dv.task')}">${dvTaskOptions(it)}</select>
+        ${sug ? `<span class="dv-sug"><button data-act="dv-link" data-id="${it.id}" data-task="${sug.id}" title="${esc(sug.title)}">${tr('dv.sug.link', { t: esc(trunc(sug.title, 16)) })}</button><button class="dv-sx" data-act="dv-nosug" data-id="${it.id}" title="${tr('dv.sug.no')}" aria-label="${tr('dv.sug.no')}">×</button></span>` : ''}
       </div>
     </div>
-    <span class="dv-acts">${!it.done ? `<button class="dv-move" data-act="dv-move" data-id="${it.id}" aria-expanded="${DV.moving === it.id}" title="移到另一天的清单最后">移到 ▾</button>` : ''}<button class="mini-x" data-act="dv-del" data-id="${it.id}" aria-label="删除这条">${ICON.close}</button>
-      ${DV.moving === it.id ? `<span class="dv-pop" role="dialog" aria-label="移到哪一天"><input type="date" class="field" id="dv-mvdate" value="${DV.moveDate}" aria-label="目标日期"><button class="btn primary sm" data-act="dv-move-go" data-id="${it.id}" ${DV.moveDate && DV.moveDate !== DV.date ? '' : 'disabled'}>确定</button></span>` : ''}</span>
+    <span class="dv-acts">${!it.done ? `<button class="dv-move" data-act="dv-move" data-id="${it.id}" aria-expanded="${DV.moving === it.id}" title="${tr('dv.move.title')}">${tr('dv.move')}</button>` : ''}<button class="mini-x" data-act="dv-del" data-id="${it.id}" aria-label="${tr('dv.del')}">${ICON.close}</button>
+      ${DV.moving === it.id ? `<span class="dv-pop" role="dialog" aria-label="${tr('dv.move.pop')}"><input type="date" class="field" id="dv-mvdate" value="${DV.moveDate}" aria-label="${tr('dv.move.date')}"><button class="btn primary sm" data-act="dv-move-go" data-id="${it.id}" ${DV.moveDate && DV.moveDate !== DV.date ? '' : 'disabled'}>${tr('dv.move.ok')}</button></span>` : ''}</span>
   </li>`;
 }
 function renderToday() {
@@ -1758,17 +2036,17 @@ function renderToday() {
   const prev = addDays(date, -1), next = addDays(date, 1);
   return `<div id="dv-head">${todayHeadHtml()}</div>
   <div class="today-cols">
-  <section class="dv" aria-label="今日清单">
+  <section class="dv" aria-label="${tr('dv.label')}">
     <header class="dv-nav">
       <button class="btn ghost sm" data-act="dv-day" data-d="${prev}">‹ ${cnDate(prev)}</button>
-      <h2>${isToday ? '今日清单' : `${cnDate(date)} ${weekday(date)}`}${items.length ? `<span class="dv-count">${done}/${items.length} 完成</span>` : ''}</h2>
-      <span class="dv-navr">${isToday ? '' : `<button class="btn ghost sm" data-act="dv-day" data-d="${td}">回到今天</button>`}<button class="btn ghost sm" data-act="dv-day" data-d="${next}">${cnDate(next)} ›</button></span>
+      <h2>${isToday ? tr('dv.title') : `${cnDate(date)} ${weekday(date)}`}${items.length ? `<span class="dv-count">${tr('dv.count', { done, total: items.length })}</span>` : ''}</h2>
+      <span class="dv-navr">${isToday ? '' : `<button class="btn ghost sm" data-act="dv-day" data-d="${td}">${tr('dv.backToday')}</button>`}<button class="btn ghost sm" data-act="dv-day" data-d="${next}">${cnDate(next)} ›</button></span>
     </header>
-    <form class="dv-add" data-form="dv-add"><input class="field" id="dv-input" name="text" placeholder="${isToday ? '输入今天想做的事，回车添加' : `给 ${cnDate(date)} 添加一条，回车保存`}" autocomplete="off" aria-label="添加到清单">
-      <select id="dv-new-area" aria-label="新条目的类型" ${dvNewAreaAttrs()}>${dvNewAreaOptions()}</select>
-      <select id="dv-new-task" aria-label="新条目归属的任务">${dvTaskOptions({ areaId: typeId(DV.newArea), taskId: DV.newTask })}</select></form>
+    <form class="dv-add" data-form="dv-add"><input class="field" id="dv-input" name="text" placeholder="${isToday ? tr('dv.ph.today') : tr('dv.ph.day', { date: cnDate(date) })}" autocomplete="off" aria-label="${tr('dv.add')}">
+      <select id="dv-new-area" aria-label="${tr('dv.newArea')}" ${dvNewAreaAttrs()}>${dvNewAreaOptions()}</select>
+      <select id="dv-new-task" aria-label="${tr('dv.newTask')}">${dvTaskOptions({ areaId: typeId(DV.newArea), taskId: DV.newTask })}</select></form>
     <div id="dv-new-sug" class="dv-new-sug"></div>
-    ${items.length ? `<ul class="dv-list" id="dv-list">${items.map(dvRow).join('')}</ul>` : `<p class="empty-note dv-empty">${isToday ? '今天的清单还是空的。' : '这一天没有记录。'}</p>`}
+    ${items.length ? `<ul class="dv-list" id="dv-list">${items.map(dvRow).join('')}</ul>` : `<p class="empty-note dv-empty">${isToday ? tr('dv.empty.today') : tr('dv.empty.day')}</p>`}
   </section>
   ${renderBigTasks()}
   </div>`;
@@ -1781,7 +2059,7 @@ function bigTaskItem(t, todayIds) {
     <span class="sd ${t.status}" aria-hidden="true"></span>
     <span class="bt-body">
       <span class="bt-title">${esc(t.title)}</span>
-      <span class="bt-meta">${areaTag(typeOf(t.areaId))}${dueBadge(t.due, done)}${n ? `<span class="bt-today">今天 ${n} 条</span>` : ''}</span>
+      <span class="bt-meta">${areaTag(typeOf(t.areaId))}${dueBadge(t.due, done)}${n ? `<span class="bt-today">${tr('bt.today', { n })}</span>` : ''}</span>
     </span>
   </button></li>`;
 }
@@ -1792,10 +2070,10 @@ function renderBigTasks() {
   const todayIds = dayItems(todayStr()).map(it => it.taskId).filter(Boolean);
   // 今日正在推进: how many different tasks today's list is linked to (the highlighted ones)
   const pushing = new Set(todayIds.filter(id => T(id))).size;
-  return `<aside class="bt" aria-label="任务">
-    <div class="bt-h"><h2>任务</h2><span class="n">今日正在推进 ${pushing} 项</span></div>
-    ${open.length ? `<ul class="bt-list">${open.map(t => bigTaskItem(t, todayIds)).join('')}</ul>` : '<p class="empty-note bt-empty">没有未完成的任务。</p>'}
-    ${done.length ? `<button class="bt-more" data-act="bt-done" aria-expanded="${DV.showDone}">已完成 ${done.length} 个 ${DV.showDone ? '▾' : '▸'}</button>
+  return `<aside class="bt" aria-label="${tr('bt.label')}">
+    <div class="bt-h"><h2>${tr('bt.h')}</h2><span class="n">${tr('bt.pushing', { n: pushing })}</span></div>
+    ${open.length ? `<ul class="bt-list">${open.map(t => bigTaskItem(t, todayIds)).join('')}</ul>` : `<p class="empty-note bt-empty">${tr('bt.empty')}</p>`}
+    ${done.length ? `<button class="bt-more" data-act="bt-done" aria-expanded="${DV.showDone}">${tr('bt.done', { n: done.length })} ${DV.showDone ? '▾' : '▸'}</button>
       ${DV.showDone ? `<ul class="bt-list">${done.map(t => bigTaskItem(t, todayIds)).join('')}</ul>` : ''}` : ''}
   </aside>`;
 }
@@ -1829,7 +2107,7 @@ document.addEventListener('click', e => {
     case 'dv-del': {
       const it = dayItems(DV.date).find(x => x.id === id);
       dvWrite(DV.date, dayItems(DV.date).filter(x => x.id !== id));
-      if (it) toast(`已删除：${trunc(it.text, 20)}`);
+      if (it) toast(tr('dv.deleted', { t: trunc(it.text, 20) }));
       break;
     }
     case 'dv-link': { const t = T(el.dataset.task); if (t) dvPatch(id, it => { it.taskId = t.id; it.areaId = typeId(t.areaId); }); break; }
@@ -1867,7 +2145,7 @@ document.addEventListener('submit', e => {
 /* DV.newArea: '' = not chosen yet (shows 「— 类型 —」, no colour), 'none' = 其它 picked, or a type id.
    Not chosen and 其它 are saved the same way (no type). */
 function dvNewAreaOptions() {
-  return `<option value="" ${DV.newArea ? '' : 'selected'}>— 类型 —</option>`
+  return `<option value="" ${DV.newArea ? '' : 'selected'}>${tr('dv.pickType')}</option>`
     + dvAreas().map(x => `<option value="${x.id}" ${x.id === DV.newArea ? 'selected' : ''}>${esc(x.name)}</option>`).join('')
     + `<option value="none" ${DV.newArea === 'none' ? 'selected' : ''}>${NONE.name}</option>`;
 }
@@ -1877,7 +2155,7 @@ function dvNewSug() {
   const box = $('#dv-new-sug'); if (!box) return;
   const text = $('#dv-input')?.value || '';
   const sug = !DV.newTask && !DV.newSugOff && text.trim() ? dvSuggest(text) : null;
-  box.innerHTML = sug ? `<span class="dv-sug"><button type="button" data-act="dv-new-use" data-task="${sug.id}" title="${esc(sug.title)}">可能属于：${esc(trunc(sug.title, 24))} · 选用</button><button type="button" class="dv-sx" data-act="dv-new-nosug" title="不是这个" aria-label="不是这个">×</button></span>` : '';
+  box.innerHTML = sug ? `<span class="dv-sug"><button type="button" data-act="dv-new-use" data-task="${sug.id}" title="${esc(sug.title)}">${tr('dv.sug.use', { t: esc(trunc(sug.title, 24)) })}</button><button type="button" class="dv-sx" data-act="dv-new-nosug" title="${tr('dv.sug.no')}" aria-label="${tr('dv.sug.no')}">×</button></span>` : '';
 }
 function dvNewPickers() {
   const a = $('#dv-new-area'), k = $('#dv-new-task'); if (!a || !k) return;
@@ -1927,6 +2205,15 @@ document.addEventListener('click', e => {
       S.filter.area = el.dataset.area; lsSet('weisy.area', S.filter.area);
       renderFilters(); renderMain(); break;
     case 'new-task': openTask(null); break;
+    case 'lang': {
+      const l = LANG === 'en' ? 'zh' : 'en';
+      setLang(l);
+      if (!Store.db) break;
+      switchExamples(l);
+      S.langSaving = (S.langSaving || 0) + 1; // a settings echo from before this save must not switch back
+      put('settings', 'ui', { ...uiSettings(), lang: l }).then(() => { S.langSaving--; syncLang(); });
+      break;
+    }
     case 'export': exportData(); break;
     case 'toggle': toggleDone(id); break;
     case 'edit':
@@ -1939,8 +2226,8 @@ document.addEventListener('click', e => {
     case 'close-drawer': closeDrawer(); break;
     case 'close-modal': closeModal(); break;
     case 'del-task': {
-      if (!armed(el, '再点一次确认删除')) return;
-      const t = T(id); closeModal(); del('tasks', id); if (t) toast(`已删除：${t.title}`);
+      if (!armed(el, tr('confirmDel'))) return;
+      const t = T(id); closeModal(); del('tasks', id); if (t) toast(tr('dv.deleted', { t: t.title }));
       break;
     }
     case 'ms-toggle': msUpdate(ms => ms.map(m => m.id === el.dataset.mid ? { ...m, done: !m.done } : m)); break;
@@ -2008,6 +2295,7 @@ async function init() {
   if (!MODULES.some(m => m.id === S.view)) S.view = 'today';
   S.filter.area = lsGet('weisy.area') || 'all';
   $('#ver').textContent = APP_VERSION;
+  applyStatic();
   renderAll();
 
   const use = window.weisyStore && typeof window.weisyStore.use === 'function' ? n => window.weisyStore.use(n).catch(() => null) : async () => null;
@@ -2023,6 +2311,7 @@ async function init() {
     Store.subscribe(name, docs => {
       S[name] = docs;
       S.loaded.add(name);
+      if (name === 'settings') syncLang();
       if (S.loaded.size === COLLECTIONS.length) {
         S.status = 'ready';
         if (S.filter.area !== 'all' && S.filter.area !== 'none' && !A(S.filter.area)) S.filter.area = 'all';

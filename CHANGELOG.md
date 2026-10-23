@@ -3,6 +3,29 @@
 Each version: 中文 first, then English. The release workflow copies the section of the version being released
 into the GitHub release notes, so keep the heading format `## v<version> (<date>)`.
 
+## v0.3.0 (2026-10-23)
+
+**中文**
+- 新增**英文版**：右上角「中文 / EN」一键切换，选择和数据一起保存。所有页面、弹窗、提示、日期和小老鼠的问候都有英文；你自己写的内容不会被翻译。
+- 第一次打开时跟随电脑的语言：中文系统用中文，其他系统用英文，包括示例和第一次打开时的小窗口。启动出错时的提示也跟随系统语言。
+- 示例换了一套：计划夏天的假期、清理衣柜、修好自行车、学点基础西班牙语等，中英文内容一一对应。切换语言时，你还没改动过的示例会跟着换成另一种语言。
+- 副业页的小老鼠往左下方挪了一点，不再挡住「累计已赚」。
+- 安装成 Edge 应用时显示的名字改为「Weisy Daily Desk · 潦草鼠鼠之家」。
+- 开发：新增英文检查（英文页面上不能残留中文）、截图工具 `tools/make_screenshots.py`，README 的截图和动图有中英文两套；几个偶尔失败的页面测试改为等到数据保存完成再检查。
+
+**English**
+- New **English version**: switch with **中文 / EN** at the top right; the choice is saved with your data. Every page,
+  dialog, message, date and the mouse's greetings are in English; what you typed is never translated.
+- The first start follows your computer's language: Chinese on a Chinese system, English otherwise, including the
+  examples and the first-run dialog. Start-up error messages follow the system language too.
+- New examples: plan the summer holiday, declutter the wardrobe, fix the bike, learn basic Spanish and more, the same
+  in both languages. Switching the language also switches the examples you have not changed.
+- On the Side gigs page the mouse moved a little left and down, so it no longer covers the earnings.
+- Installed as an Edge app, Weisy is now called "Weisy Daily Desk · 潦草鼠鼠之家".
+- Development: a new English check (no Chinese left on an English page), a screenshot tool
+  `tools/make_screenshots.py`, README screenshots and animation in both languages; a few page checks that failed now
+  and then now wait until the data is saved.
+
 ## v0.2.2 (2026-10-22)
 
 **中文**

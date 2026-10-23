@@ -1,9 +1,10 @@
-"""Record docs/demo.gif: the 今日 page, two items ticked off, the mouse cheering each time.
+"""Record docs/demo-zh.gif and docs/demo-en.gif: the 今日 / Today page, two items ticked off, the mouse cheering each time.
 
-    python tools/make_demo_gif.py
+    python tools/make_demo_gif.py            (both languages)
+    python tools/make_demo_gif.py en         (one language)
 
 Needs Windows + Microsoft Edge and Pillow (pip install pillow). It starts server.py on a test port with
-throw-away starter data, drives a headless Edge through the DevTools protocol (a tiny WebSocket client
+throw-away starter data in that language, drives a headless Edge through the DevTools protocol (a tiny WebSocket client
 below, standard library only), takes screenshots while the cheer animation runs and joins them into a GIF.
 Everything temporary lives in build/demo-tmp inside the repository and is removed afterwards.
 """
@@ -24,7 +25,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 TMP = ROOT / 'build' / 'demo-tmp'
-OUT = ROOT / 'docs' / 'demo.gif'
+DOCS = ROOT / 'docs'
+BROWSER_LANG = {'zh': 'zh-CN', 'en': 'en-GB'}
 PORT = 8797
 EDGE = os.environ.get('EDGE_PATH') or next((p for p in (r'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
                                                           r'C:/Program Files/Microsoft/Edge/Application/msedge.exe') if Path(p).exists()), 'msedge')
@@ -101,17 +103,18 @@ def wait_until(check, seconds=20):
     raise RuntimeError('timed out')
 
 
-def main():
+def record(lang):
+    out = DOCS / f'demo-{lang}.gif'
     shutil.rmtree(TMP, ignore_errors=True)
     TMP.mkdir(parents=True)
     server = subprocess.Popen([sys.executable, str(ROOT / 'server.py'), '--port', str(PORT), '--data', str(TMP / 'data'), '--keep-alive'],
-                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                              env={**os.environ, 'WEISY_LANG': lang}, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     profile = TMP / 'edge-profile'
     edge = None
     try:
         subprocess.run([sys.executable, str(ROOT / 'tools' / 'build.py')], check=True, stdout=subprocess.DEVNULL)
         wait_until(lambda: _ping())
-        edge = subprocess.Popen([EDGE, '--headless=new', '--disable-gpu', '--hide-scrollbars', f'--user-data-dir={profile}',
+        edge = subprocess.Popen([EDGE, '--headless=new', '--disable-gpu', '--hide-scrollbars', f'--lang={BROWSER_LANG[lang]}', f'--user-data-dir={profile}',
                                  '--remote-debugging-port=0', f'--window-size={VIEW_W},{VIEW_H}', 'about:blank'],
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         port_file = profile / 'DevToolsActivePort'
@@ -163,10 +166,10 @@ def main():
         sample.paste(frames[0][0], (0, 0)); sample.paste(frames[len(frames) // 4][0], (0, frames[0][0].height))
         palette = sample.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
         images = [f[0].quantize(palette=palette, dither=Image.Dither.NONE) for f in frames]
-        OUT.parent.mkdir(exist_ok=True)
-        images[0].save(OUT, save_all=True, append_images=images[1:], duration=durations, loop=0, optimize=True, disposal=1)
-        print(f'{OUT.relative_to(ROOT)}: {len(images)} frames, {sum(durations) / 1000:.1f} s, '
-              f'{images[0].width}x{images[0].height}, {OUT.stat().st_size / 1024:.0f} KB')
+        out.parent.mkdir(exist_ok=True)
+        images[0].save(out, save_all=True, append_images=images[1:], duration=durations, loop=0, optimize=True, disposal=1)
+        print(f'{out.relative_to(ROOT)}: {len(images)} frames, {sum(durations) / 1000:.1f} s, '
+              f'{images[0].width}x{images[0].height}, {out.stat().st_size / 1024:.0f} KB')
     finally:
         if edge:
             edge.kill()
@@ -193,4 +196,5 @@ def _ping():
 
 
 if __name__ == '__main__':
-    main()
+    for lang in [a for a in sys.argv[1:] if a in BROWSER_LANG] or list(BROWSER_LANG):
+        record(lang)

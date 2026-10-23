@@ -1,0 +1,280 @@
+{
+ "format": 1,
+ "collections": {
+  "areas": {
+   "main": {
+    "name": "Main",
+    "color": "#2F6BB3",
+    "tier": "main",
+    "order": 1,
+    "desc": "decides where you are heading"
+   },
+   "side": {
+    "name": "Side",
+    "color": "#2E8157",
+    "tier": "growth",
+    "order": 2,
+    "desc": "opens more doors"
+   },
+   "long": {
+    "name": "Long-term",
+    "color": "#C27716",
+    "tier": "habit",
+    "order": 3,
+    "desc": "adds up over time"
+   }
+  },
+  "tasks": {
+   "ex-spanish": {
+    "title": "Example: Learn basic Spanish",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "Practise 15 minutes a day",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 1024,
+    "milestones": [
+     {
+      "id": "em1",
+      "title": "Finish level A1",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em2",
+      "title": "Hold a 5-minute conversation",
+      "due": "",
+      "done": false
+     }
+    ]
+   },
+   "ex-wardrobe": {
+    "title": "Example: Declutter the wardrobe",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "Pick five things to sell",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 2048,
+    "milestones": []
+   },
+   "ex-bike": {
+    "title": "Example: Fix the bike",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "Fit a new inner tube",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 3072,
+    "milestones": []
+   },
+   "ex-holiday": {
+    "title": "Example: Plan the summer holiday",
+    "areaId": "main",
+    "status": "doing",
+    "priority": 1,
+    "due": "",
+    "next": "Agree on the dates",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 4096,
+    "milestones": [
+     {
+      "id": "em1",
+      "title": "Pick the destination",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em2",
+      "title": "Book the train or flights",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em3",
+      "title": "Book a place to stay",
+      "due": "",
+      "done": false
+     }
+    ]
+   }
+  },
+  "daily": {
+   "__today__": {
+    "date": "__today__",
+    "items": [
+     {
+      "id": "ex1",
+      "text": "Example: Practise Spanish for 15 minutes",
+      "done": false,
+      "doneAt": "",
+      "areaId": "long",
+      "taskId": "ex-spanish"
+     },
+     {
+      "id": "ex2",
+      "text": "Example: Pick up the parcel",
+      "done": false,
+      "doneAt": "",
+      "areaId": "side",
+      "taskId": "ex-bike"
+     },
+     {
+      "id": "ex3",
+      "text": "Example: Return the bottles for the deposit",
+      "done": false,
+      "doneAt": "",
+      "areaId": "",
+      "taskId": ""
+     },
+     {
+      "id": "ex4",
+      "text": "Example: Book a dentist appointment",
+      "done": false,
+      "doneAt": "",
+      "areaId": "",
+      "taskId": ""
+     }
+    ]
+   }
+  },
+  "gigPaths": {
+   "ex-secondhand": {
+    "name": "Example: Selling second-hand clothes",
+    "platformLabel": "Platform",
+    "projectLabel": "Project",
+    "note": "",
+    "order": 1,
+    "createdAt": ""
+   },
+   "ex-design": {
+    "name": "Example: Freelance design",
+    "platformLabel": "Platform",
+    "projectLabel": "Project",
+    "note": "",
+    "order": 2,
+    "createdAt": ""
+   },
+   "ex-pets": {
+    "name": "Example: Dog walking and pet sitting",
+    "platformLabel": "Platform",
+    "projectLabel": "Project",
+    "note": "",
+    "order": 3,
+    "createdAt": ""
+   }
+  },
+  "gigs": {
+   "ex-secondhand-p": {
+    "kind": "platform",
+    "pathId": "ex-secondhand",
+    "parentId": "",
+    "name": "Example: Second-hand app",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 1,
+    "createdAt": ""
+   },
+   "ex-design-p": {
+    "kind": "platform",
+    "pathId": "ex-design",
+    "parentId": "",
+    "name": "Example: Freelance platform",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 2,
+    "createdAt": ""
+   },
+   "ex-pets-p": {
+    "kind": "platform",
+    "pathId": "ex-pets",
+    "parentId": "",
+    "name": "Example: Word of mouth",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 3,
+    "createdAt": ""
+   }
+  },
+  "habits": {
+   "ex-sport": {
+    "name": "Example: Exercise",
+    "color": "#2B8A3E",
+    "order": 1,
+    "useTags": true,
+    "tags": [
+     "Running",
+     "Cycling",
+     "Swimming"
+    ],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "Notes",
+    "archived": false,
+    "createdAt": ""
+   },
+   "ex-language": {
+    "name": "Example: Language practice",
+    "color": "#E8590C",
+    "order": 2,
+    "useTags": false,
+    "tags": [],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "What you practised",
+    "archived": false,
+    "createdAt": ""
+   },
+   "ex-screen": {
+    "name": "Example: Screen-free evening",
+    "color": "#7048E8",
+    "order": 3,
+    "useTags": false,
+    "tags": [],
+    "mins": false,
+    "longNote": false,
+    "didLabel": "Notes",
+    "archived": false,
+    "createdAt": ""
+   }
+  },
+  "settings": {
+   "ui": {
+    "lang": "en"
+   }
+  }
+ }
+}

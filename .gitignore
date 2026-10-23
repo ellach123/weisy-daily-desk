@@ -15,6 +15,7 @@ dist/
 # test run leftovers
 tests/tmp/
 tests/result.txt
+tests/result-en.txt
 
 __pycache__/
 *.pyc
